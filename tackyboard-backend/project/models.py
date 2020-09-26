@@ -12,7 +12,7 @@ class User(db.Model):
 
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(60), nullable=False, unique=True)
-    password = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String, nullable=False)
     fname = db.Column(db.String(30), nullable=False)
     lname = db.Column(db.String(30), nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
@@ -32,12 +32,12 @@ class User(db.Model):
             db.session.add(user)
             db.session.commit()
         except:
-            return {"error": {"email": "Email is already used."}}
+            return {"error": "E-mail already exists in the database."}
 
         return user
 
     @classmethod
-    def authenticate(cls, email, password):
+    def login(cls, email, password):
         """
         Search for the user's record in db, if passwords match, returns the user.
         If unable to match or find the user, return False
@@ -51,6 +51,15 @@ class User(db.Model):
 
         return False
 
+    def serialize(self):
+        """Serialize the instance object of a user."""
+        return {
+            "user_id": self.user_id,
+            "first_name": self.fname,
+            "last_name": self.lname,
+            "email": self.email,
+            "created_date": self.created_date
+        }
 
 class ApplicationStatus(db.Model):
 

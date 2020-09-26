@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 /**
@@ -16,15 +16,6 @@ function JobPostForm() {
 	"job_description": "Yes",
 	"scrape": "false"
   */
-
-  // useEffect for the csrf token for the form.
-  useEffect(function handleCSRFToken() {
-    async function getCSRFToken() {
-      const resp = await axios.get('http://localhost:5000/job-posts/new');
-      setFormData(currData => ({ ...currData, csrf_token: resp.data.csrf_token}))
-    }
-    getCSRFToken();
-  }, []);
   
   const handleChange = (evt) => {
     const { name, value } = evt.target;

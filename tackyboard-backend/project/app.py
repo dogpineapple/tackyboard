@@ -34,6 +34,52 @@ def add_user_to_g():
     else:
         g.user = None
 
+###############
+# USERS ROUTES #
+###############
+
+@app.route("/register", methods=["POST"])
+def register():
+    """Register a new user."""
+    
+    resp = User.register(**request.json)
+    
+    if isinstance(resp, User):
+        return (resp.serialize(), 201)
+    
+    return (resp, 400)
+    
+
+@app.route("/login", methods=["POST"])
+def login():
+    """Logs in an existing user."""
+
+    resp = User.login(**request.json)
+
+    if resp:
+        return {"_token"}
+        
+    
+    return ({"error": "E-mail and password did not match."}, 400)
+
+
+# must be LOGGED IN
+@app.route("/logout", methods=["POST"])
+def logout():
+    """Logs out an existing, logged-in user."""
+
+
+# must be LOGGED IN, SAME USER
+@app.route("/users/<user_id>", methods=["UPDATE"])
+def userUpdate(user_id):
+    """Update an existing, logged-in user."""
+
+
+
+####################
+# JOB POSTS ROUTES #
+####################
+
 
 @app.route("/job-posts", methods=["POST"])
 def add_job_post():
