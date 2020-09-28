@@ -18,7 +18,7 @@ class User(db.Model):
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
-        return f"<User #{self.id}: {self.email}>"
+        return f"<User #{self.user_id}: {self.email}>"
 
     @classmethod
     def register(cls, email, password, first_name, last_name):
@@ -31,7 +31,7 @@ class User(db.Model):
         try:
             db.session.add(user)
             db.session.commit()
-            
+
         except:
             return {"error": "E-mail already exists in the database."}
 
@@ -43,7 +43,7 @@ class User(db.Model):
         Search for the user's record in db, if passwords match, returns the user.
         If unable to match or find the user, return False
         """
-        user = cls.query.filter_by(username=username).first()
+        user = cls.query.filter_by(email=email).first()
 
         if user:
             is_auth = bcrypt.check_password_hash(user.password, password)
@@ -59,8 +59,9 @@ class User(db.Model):
             "first_name": self.fname,
             "last_name": self.lname,
             "email": self.email,
-            "created_date": self.created_date
+            "created_date": self.created_date,
         }
+
 
 class ApplicationStatus(db.Model):
 
@@ -126,7 +127,7 @@ class JobPost(db.Model):
         }
 
     @classmethod
-    def add(cls, post_url, company, position, origin_name):
+    def add(cls, post_url, company, position, origin_name, user_id):
         """
         Creates an instance of JobPost and inserts into the database.
         Returns a job_post instance.
@@ -137,6 +138,7 @@ class JobPost(db.Model):
             company=company,
             position=position,
             origin_name=origin_name,
+            user_id=user_id,
         )
 
         try:
@@ -146,6 +148,7 @@ class JobPost(db.Model):
             return {"error": {"Database add error": e}}
 
         return new_job_post
+
 
 class PostNote(db.Model):
 
@@ -168,8 +171,9 @@ class PostNote(db.Model):
             "post_note_id": self.id,
             "job_post_id": self.job_post_id,
             "note_title": self.note_title,
-            "note": self.note
+            "note": self.note,
         }
+
 
 def connect_db(app):
     """Connect this database to provided Flask app."""
