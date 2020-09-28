@@ -13,8 +13,8 @@ class User(db.Model):
     user_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     email = db.Column(db.String(60), nullable=False, unique=True)
     password = db.Column(db.String, nullable=False)
-    fname = db.Column(db.String(30), nullable=False)
-    lname = db.Column(db.String(30), nullable=False)
+    fname = db.Column(db.String(60), nullable=False)
+    lname = db.Column(db.String(60), nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
@@ -31,6 +31,7 @@ class User(db.Model):
         try:
             db.session.add(user)
             db.session.commit()
+            
         except:
             return {"error": "E-mail already exists in the database."}
 
