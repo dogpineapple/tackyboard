@@ -31,10 +31,10 @@ connect_db(app)
 def token_required(f):
     @wraps(f)
     def _verify(*args, **kwargs):
-        token = request.json["_token"]
+        token = request.json.get("_token", None)
 
         invalid_msg = {
-            "message": "Invalid token. Registeration and / or authentication required",
+            "message": "Invalid token. Registration and / or authentication required",
             "authenticated": False,
         }
         expired_msg = {
@@ -97,7 +97,7 @@ def login():
 
 
 # must be LOGGED IN, SAME USER
-@app.route("/users/<user_id>", methods=["UPDATE"])
+@app.route("/users/<user_id>", methods=["PATCH"])
 @token_required
 def userUpdate(user_id):
     """Update an existing, logged-in user."""
@@ -166,6 +166,24 @@ def remove_job_post(job_post_id):
 #####################
 # POST NOTES ROUTES #
 #####################
+
+@app.route("/job-posts/<job_post_id>/post-notes", methods=["POST"])
+@token_required
+def add_post_note(user, job_post_id):
+    try:
+        post_note_title = request.json["note_title"]
+        note = request.json["note"]
+        new_post_note = PostNote(job_post_id=job_post_id, note=note, note_title=post_note_title)
+        db.session.add(new_post_note)
+        db.session.commit()
+    except Exception as e:
+        return(f"error occurred when creating new post note, {e}", 400)
+    return (
+        {
+            "post_note": new_post_note.serialize(),
+        },
+        201,
+    )
 
 # implement route/view fxn to add a new post note to a job post
 
