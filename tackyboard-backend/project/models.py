@@ -180,10 +180,17 @@ class PostNote(db.Model):
             "note_title": self.note_title,
             "note": self.note,
         }
+    @classmethod
+    def getAllPostNotes(cls, job_post_id):
+        """Retrieves all post notes for a job_post_id and returns an array of post notes."""
 
+        post_notes = cls.query.filter_by(job_post_id=job_post_id).all()
+        return post_notes
 
 def connect_db(app):
     """Connect this database to provided Flask app."""
 
     db.app = app
     db.init_app(app)
+
+

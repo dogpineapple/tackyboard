@@ -181,6 +181,10 @@ def remove_job_post(job_post_id):
 @app.route("/job-posts/<job_post_id>/post-notes", methods=["POST"])
 @token_required
 def add_post_note(user, job_post_id):
+    """
+    adds post note by job id
+    Returns a json message of post note additions
+    """
     try:
         post_note_title = request.json["note_title"]
         note = request.json["note"]
@@ -198,4 +202,14 @@ def add_post_note(user, job_post_id):
 
 # implement route/view fxn to add a new post note to a job post
 
+@app.route("/job-posts/<job_post_id>/post-notes", methods=["GET"])
+@token_required
+def get_post_notes(user, job_post_id):
+    """Retrieve all post notes for a user."""
+
+    # query for the job posts in the database
+    post_notes = PostNote.getAllPostNotes(job_post_id)
+
+    # list comprehension to serialize all the job_post
+    return ({ "post_notes": [post_note.serialize() for post_note in post_notes]}, 200)
 
