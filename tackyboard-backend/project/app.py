@@ -107,6 +107,17 @@ def userUpdate(user_id):
 # JOB POSTS ROUTES #
 ####################
 
+@app.route("/job-posts", methods=["GET"])
+@token_required
+def get_job_posts(user):
+    """Retrieve all job posts for a user."""
+
+    # query for the job posts in the database
+    job_posts = JobPost.getAllJobPosts(user.user_id)
+
+    # list comprehension to serialize all the job_post
+    return ({ "job_posts": [job_post.serialize() for job_post in job_posts]}, 200)
+
 @app.route("/job-posts", methods=["POST"])
 @token_required
 def add_job_post(user):

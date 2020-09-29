@@ -149,6 +149,13 @@ class JobPost(db.Model):
 
         return new_job_post
 
+    @classmethod
+    def getAllJobPosts(cls, user_id):
+        """Retrieves all job posts for a user_id and returns an array of job posts."""
+
+        job_posts = cls.query.filter_by(user_id=user_id).all()
+        return job_posts
+
 
 class PostNote(db.Model):
 
