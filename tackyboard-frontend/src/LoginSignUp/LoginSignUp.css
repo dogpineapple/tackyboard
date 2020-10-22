@@ -1,0 +1,81 @@
+.LoginSignUp {
+  width: 100%;
+}
+
+.LoginSignUp-bg {
+  position: relative;
+  top: 0; 
+}
+
+.LoginSignUp-circle3 {
+  position: absolute;
+  width: 35rem;
+  height: 35rem;
+  top: 50rem;
+  left: 60rem;
+  border-radius: 100%;
+  z-index: -1;
+  background-color: rgb(247, 255, 175);
+
+}
+
+.LoginSignUp-circle {
+  position: absolute;
+  width: 35rem;
+  height: 35rem;
+  top: 0rem;
+  left: 3rem;
+  border-radius: 100%;
+  z-index: -1;
+  background-color: rgb(190, 214, 241);
+}
+
+.LoginSignUp-circle2 {
+  position: absolute;
+  width: 20rem;
+  height: 20rem;
+  top: 60rem;
+  left: 5rem;
+  border-radius: 100%;
+  z-index: -1;
+  background-color: rgb(180, 255, 251);
+}
+
+.LoginSignUp-square {
+  position: absolute;
+  top: 25rem;
+  left: 30rem;
+  width: 30rem;
+  height: 30rem;
+  background-color: rgb(144, 255, 168);
+}
+
+.floating {  
+  animation-name: floating;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  margin-left: 30px;
+  margin-top: 5px;
+}
+
+@keyframes floating {
+  from { transform: translate(0,  0px); }
+  65%  { transform: translate(0, 25px); }
+  to   { transform: translate(0, -0px); }    
+}
+
+.floating-reverse {  
+  animation-name: floating-reverse;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  margin-left: 30px;
+  margin-top: 0px;
+}
+
+@keyframes floating-reverse {
+  from { transform: translate(0,  -0px); }
+  50%  { transform: translate(0, 20px); }
+  to   { transform: translate(0, 0px); }    
+}

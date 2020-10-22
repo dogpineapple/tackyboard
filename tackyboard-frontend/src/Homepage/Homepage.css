@@ -1,0 +1,22 @@
+.Homepage {
+  position: relative;
+}
+
+.Homepage-statement {
+  position: absolute;
+  top: 30rem;
+  right: 65%;
+  font-size: 1.7rem;
+}
+
+.Homepage-statement > h1 {
+  padding-bottom: 0.7rem;
+}
+
+.Homepage-img-container {
+  width: 70rem;
+  position: absolute;
+  top: 10rem;
+  right: -2%;
+  z-index: -1;
+}

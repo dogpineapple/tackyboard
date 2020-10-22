@@ -1,0 +1,17 @@
+.NavBar-list {
+  z-index: 5;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  right: 0rem;
+}
+
+.NavBar-item {
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+}
+
+.NavBar-item > a,
+.NavBar-item > a:visited {
+  color: black;
+}
