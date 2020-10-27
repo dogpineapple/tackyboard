@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import About from '../About';
 import Homepage from '../Homepage';
 import Taskboard from '../Board';
-import LoginSignUp from '../LoginSignUp';
+import Login from '../Login';
+import SignUp from '../SignUp';
 
 function Routes() {
   return (
@@ -12,7 +12,10 @@ function Routes() {
         <Taskboard />
       </Route>
       <Route path="/login">
-        <LoginSignUp />
+        <Login />
+      </Route>
+      <Route>
+        <SignUp />
       </Route>
       <Route path="/demo">
         <Taskboard />

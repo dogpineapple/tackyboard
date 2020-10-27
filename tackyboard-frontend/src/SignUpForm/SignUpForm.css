@@ -1,0 +1,37 @@
+.SignUpForm {
+  width: 50rem;
+  margin: auto; 
+  padding-top: 15rem;
+  width: 35rem;
+}
+
+.SignUpForm-login {
+  margin: 0.5rem 0rem 1rem 0rem;
+  font-size: 1.2rem;
+}
+
+.SignUpForm > form {
+  display: flex;
+  flex-direction: column;
+  width: 35rem;
+  margin: auto;
+}
+
+.SignUpForm input {
+  padding: 0.8rem 0 0.8rem 5rem;
+  margin-top: 1rem;
+  border: 1px rgb(163, 163, 163) solid;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+}
+
+.SignUpForm > form > button {
+  margin-top: 2rem;
+  background-color: rgb(123, 206, 0);
+  font-weight: 800;
+  padding: 1rem;
+  color: white;
+  border: none;
+  letter-spacing: 0.5px;
+  border-radius: 10px;
+}

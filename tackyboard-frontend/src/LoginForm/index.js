@@ -26,7 +26,7 @@ function LoginForm() {
         <button>LOGIN</button>
       </form>
     </div>
-  )
+  );
 }
 
 export default LoginForm;
