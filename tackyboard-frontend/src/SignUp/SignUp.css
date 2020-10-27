@@ -1,0 +1,7 @@
+.SignUp-background img{
+  position: absolute;
+  right: 3%;
+  bottom: -5%;
+  width: 30rem;
+  z-index: -10;
+}

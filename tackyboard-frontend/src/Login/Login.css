@@ -1,13 +1,13 @@
-.LoginSignUp {
+.Login {
   width: 100%;
 }
 
-.LoginSignUp-bg {
+.Login-bg {
   position: relative;
   top: 0; 
 }
 
-.LoginSignUp-circle3 {
+.Login-circle3 {
   position: absolute;
   width: 35rem;
   height: 35rem;
@@ -19,7 +19,7 @@
 
 }
 
-.LoginSignUp-circle {
+.Login-circle {
   position: absolute;
   width: 35rem;
   height: 35rem;
@@ -30,7 +30,7 @@
   background-color: rgb(190, 214, 241);
 }
 
-.LoginSignUp-circle2 {
+.Login-circle2 {
   position: absolute;
   width: 20rem;
   height: 20rem;
@@ -41,7 +41,7 @@
   background-color: rgb(180, 255, 251);
 }
 
-.LoginSignUp-square {
+.Login-square {
   position: absolute;
   top: 25rem;
   left: 30rem;

@@ -8,13 +8,13 @@ import SignUp from '../SignUp';
 function Routes() {
   return (
     <Switch>
-      <Route path="/taskboard/:boardid">
+      <Route path="/tackyboard/:boardid">
         <Taskboard />
       </Route>
       <Route path="/login">
         <Login />
       </Route>
-      <Route>
+      <Route path="/signup">
         <SignUp />
       </Route>
       <Route path="/demo">

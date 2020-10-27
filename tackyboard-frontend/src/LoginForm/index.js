@@ -19,7 +19,7 @@ function LoginForm() {
   return (
     <div className="LoginForm">
       <h1>TACKYBOARD LOGIN</h1>
-      <p className="LoginForm-signup">No account? <a href="/sign-up">Sign Up</a></p>
+      <p className="LoginForm-signup">No account? <a href="/signup">Sign Up</a></p>
       <form onSubmit={handleSubmit}>
         <input name="email" value={formData.email} placeholder="Email" onChange={handleChange}/>
         <input name="password" value={formData.password} placeholder="Password" onChange={handleChange}/>
