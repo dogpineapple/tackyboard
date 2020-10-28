@@ -62,7 +62,7 @@ class User(db.Model):
             "created_date": self.created_date,
         }
 
-
+#TODO: change to 'Status', tablename to 'statuses'
 class ApplicationStatus(db.Model):
 
     __tablename__ = "application_statuses"
@@ -84,6 +84,26 @@ class ClickCopyNote(db.Model):
     user = db.relationship("User", backref="click_copy_notes")
 
 
+class Tackyboard(db.Model):
+
+     __tablename__ = "tackyboards"
+    
+    tackyboard_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(50), default="My tackyboard", nullable=False)
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
+    last_updated = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow()
+    )
+    user_id = db.Column(
+        db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
+    )
+
+    user = db.relationship("User", backref="tackyboards")
+
+
+#TODO: Update to `Task` , tablename should be `tasks`
+# make sure to change columns! 
+# change the relationship from User to Tackyboard
 class JobPost(db.Model):
 
     __tablename__ = "job_posts"
@@ -108,6 +128,7 @@ class JobPost(db.Model):
         db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
     )
 
+    #TODO: change from `user` to `tackyboard`
     user = db.relationship("User", backref="job_posts")
     status = db.relationship("ApplicationStatus", backref="job_posts")
 
@@ -157,11 +178,14 @@ class JobPost(db.Model):
         return job_posts
 
 
+#TODO: Update to be `Tackynote`, tablename to `tackynotes`
+# make sure to change columns (if needed)! 
 class PostNote(db.Model):
 
     __tablename__ = "post_notes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    #TODO: This should be changed to `task_id` 
     job_post_id = db.Column(
         db.Integer,
         db.ForeignKey("job_posts.job_post_id", ondelete="CASCADE"),
