@@ -1,6 +1,8 @@
 import React from 'react';
 import './TaskList.css';
 import TaskListCard from '../TaskListCard';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 /**
  * Child of `Taskboard` component.
@@ -13,7 +15,8 @@ function TaskList(tasks) {
     // create a TaskListCard 
   return (
     <div className="TaskList" >
-      <TaskListCard title="Develop Tackyboard" description="Finish the code!" status="In progress"/>
+      <FontAwesomeIcon className="TaskList-new-task-button" icon={faPlusCircle} size="3x" onClick={() => console.log("-new Task Form modal pop-up here-")}/>
+      <TaskListCard id="1" title="Develop Tackyboard" description="Finish the code!" status="In progress"/>
     </div>
   );
 }

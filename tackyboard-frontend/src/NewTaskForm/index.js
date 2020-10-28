@@ -1,21 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
+// import axios from "axios";
 
 /**
- * NewTaskForm component renders the controlled form for 
- * creating a new job post.
+ * NewTaskForm component renders the controlled form for creating a new task.
  */
 function NewTaskForm() {
   const INITIAL_VALUES = { taskname: "", description: "", status: "", deadline: "", csrf_token: "" };
   const [formData, setFormData] = useState(INITIAL_VALUES);
-  /*
-  "post_url": "https://www.google.com/",
-	"company": "google",
-	"position": "CEO",
-	"origin_name": "AngelList",
-	"job_description": "Yes",
-	"scrape": "false"
-  */
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;

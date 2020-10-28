@@ -14,7 +14,7 @@ function TaskDetail({ task }) {
       <span className="TaskDetail-status">{task.status}</span>
       {
         task.tackycards?.length > 0 && task.tackycards?.map(card => (
-          <TackyCard key={card.title} title={card.title} body={card.body} />
+          <TackyCard key={card.id} title={card.title} body={card.body} />
         ))
       }
     </div>

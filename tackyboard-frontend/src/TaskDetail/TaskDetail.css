@@ -15,10 +15,10 @@
 
 .TaskDetail-status {
   position: absolute;
-  top: 5%;
+  top: 4%;
   right: 5%;
   background-color: rgb(255, 150, 109);
-  padding: 2% 1.5%;
+  padding: 1rem 1.1rem;
   border-radius: 8px;
   color:white;
   text-transform: uppercase;
