@@ -101,7 +101,7 @@ def login():
 @token_required
 def userUpdate(user_id):
     """Update an existing, logged-in user."""
-    
+
 
 ####################
 # JOB POSTS ROUTES #
@@ -116,7 +116,8 @@ def get_job_posts(user):
     job_posts = JobPost.getAllJobPosts(user.user_id)
 
     # list comprehension to serialize all the job_post
-    return ({ "job_posts": [job_post.serialize() for job_post in job_posts]}, 200)
+    return ({"job_posts": [job_post.serialize() for job_post in job_posts]}, 200)
+
 
 @app.route("/job-posts", methods=["POST"])
 @token_required
@@ -140,7 +141,8 @@ def add_job_post(user):
         origin_name = request.json["origin_name"]
         job_description = request.json["job_description"]
 
-        new_job_post = JobPost.add(post_url, company, position, origin_name, user_id)
+        new_job_post = JobPost.add(
+            post_url, company, position, origin_name, user_id)
 
         new_post_note = PostNote(
             job_post_id=new_job_post.job_post_id,
@@ -178,6 +180,7 @@ def remove_job_post(job_post_id):
 # POST NOTES ROUTES #
 #####################
 
+
 @app.route("/job-posts/<job_post_id>/post-notes", methods=["POST"])
 @token_required
 def add_post_note(user, job_post_id):
@@ -188,7 +191,8 @@ def add_post_note(user, job_post_id):
     try:
         post_note_title = request.json["note_title"]
         note = request.json["note"]
-        new_post_note = PostNote(job_post_id=job_post_id, note=note, note_title=post_note_title)
+        new_post_note = PostNote(
+            job_post_id=job_post_id, note=note, note_title=post_note_title)
         db.session.add(new_post_note)
         db.session.commit()
     except Exception as e:
@@ -202,6 +206,7 @@ def add_post_note(user, job_post_id):
 
 # implement route/view fxn to add a new post note to a job post
 
+
 @app.route("/job-posts/<job_post_id>/post-notes", methods=["GET"])
 @token_required
 def get_post_notes(user, job_post_id):
@@ -211,5 +216,4 @@ def get_post_notes(user, job_post_id):
     post_notes = PostNote.getAllPostNotes(job_post_id)
 
     # list comprehension to serialize all the job_post
-    return ({ "post_notes": [post_note.serialize() for post_note in post_notes]}, 200)
-
+    return ({"post_notes": [post_note.serialize() for post_note in post_notes]}, 200)
