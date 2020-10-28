@@ -1,8 +1,18 @@
 # tackyboard
-A job search assistant board.
+A universal card-based task managing web application.
 
+# tackyboard motive
+Tackyboard was brought to life after an attempt at using Trello's task board for tracking job applications but, eventually felt overwhelmed by the number of features available.
+In Tackyboard's version, we simplified as much as possible while keeping the qualities of a universal task board.
 
-# Installation:
+# the stack
+Front-end: JavaScript
+Front-end libraries: React.js, axios, fortawesome
+
+Back-end: Python, PostgreSQL
+Back-end libraries: Flask, SQLAlchemy, JWT authentication, Bcrypt
+
+# installation:
 To install, clone the repo and you should have two folders, `tackyboard-frontend` and `tackyboard-backend`.
 
 We'll start with the backend first.
