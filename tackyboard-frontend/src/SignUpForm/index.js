@@ -13,7 +13,7 @@ function SignUpForm() {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const resp = await axios.post('http://localhost:5000/register', formData);
+    // const resp = await axios.post('http://localhost:5000/register', formData);
   }
 
   return (

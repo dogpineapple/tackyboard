@@ -26,8 +26,8 @@ function NewTaskForm() {
   const handleSubmit = async (evt) => {
     evt.preventDefault();
     console.log(`submitted`, formData);
-    const resp = await axios.post('http://localhost:5000/job-posts/new', formData);
-    console.log('response...', resp.data);
+    // const resp = await axios.post('http://localhost:5000/job-posts/new', formData);
+    // console.log('response...', resp.data);
   }
 
   return (

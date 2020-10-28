@@ -1,0 +1,31 @@
+.Taskboard {
+  background-color: #525252;
+  width: 100vw;
+  height: 100vh;
+}
+
+.Taskboard-window1 {
+  position: absolute;
+  border-right: rgb(65, 65, 65) 1px solid;
+  top: 6%;
+  left: 0;
+  width: 25%;
+  height: 100%;
+}
+
+.Taskboard-window2 {
+  position: absolute;
+  top: 6%;
+  left: 25%;
+  border-right: rgb(65, 65, 65) 1px solid;
+  width: 60%;
+  height: 100%;
+}
+
+.Taskboard-window3 {
+  position: absolute;
+  top: 6%;
+  left: 85%;
+  width: 15%;
+  height: 100%;
+}

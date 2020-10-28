@@ -1,5 +1,4 @@
 import React from 'react';
-import JobPostForm from './JobPostForm';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 import NavBar from './NavBar';

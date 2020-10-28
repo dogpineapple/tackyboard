@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Homepage from '../Homepage';
-import Taskboard from '../Board';
+import Taskboard from '../Taskboard';
 import Login from '../Login';
 import SignUp from '../SignUp';
 
