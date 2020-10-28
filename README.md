@@ -7,10 +7,10 @@ In Tackyboard's version, we simplified as much as possible while keeping the qua
 
 # the stack
 Front-end: JavaScript
-Front-end libraries: React.js, axios, fortawesome
+> Front-end libraries: React.js, axios, fortawesome
 
 Back-end: Python, PostgreSQL
-Back-end libraries: Flask, SQLAlchemy, JWT authentication, Bcrypt
+> Back-end libraries: Flask, SQLAlchemy, JWT authentication, Bcrypt
 
 # installation:
 To install, clone the repo and you should have two folders, `tackyboard-frontend` and `tackyboard-backend`.
