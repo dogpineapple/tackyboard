@@ -113,7 +113,7 @@ class Tackyboard(db.Model):
 
 
 #TODO: Update to `Task` , tablename should be `tasks`
-# make sure to change columns! 
+# make sure to change columns!
 # change the relationship from User to Tackyboard
 # Also add tests.
 class JobPost(db.Model):
@@ -122,17 +122,18 @@ class JobPost(db.Model):
 
     job_post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_url = db.Column(db.String, nullable=False)
-    company = db.Column(db.String(50), nullable=False)
-    application_status_id = db.Column(
+    # company = db.Column(db.String(50), nullable=False)
+    status_id = db.Column(
         db.Integer,
-        db.ForeignKey("application_statuses.status_id"),
+        db.ForeignKey("statuses.status_id"),
         nullable=False,
         default=0,
     )
     position = db.Column(db.String(50), nullable=False, default="Unknown")
     origin_name = db.Column(db.String(50), nullable=False, default="Unknown")
-    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-    last_status_update = db.Column(
+    created_date = db.Column(
+        db.DateTime, nullable=False, default=datetime.utcnow())
+        last_status_update = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow()
     )
     interview_date_time = db.Column(db.DateTime, nullable=True)
@@ -191,13 +192,13 @@ class JobPost(db.Model):
 
 
 #TODO: Update to be `Tackynote`, tablename to `tackynotes`
-# make sure to change columns (if needed)! 
+# make sure to change columns (if needed)!
 class PostNote(db.Model):
 
     __tablename__ = "post_notes"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    #TODO: This should be changed to `task_id` 
+    #TODO: This should be changed to `task_id`
     job_post_id = db.Column(
         db.Integer,
         db.ForeignKey("job_posts.job_post_id", ondelete="CASCADE"),
@@ -216,6 +217,7 @@ class PostNote(db.Model):
             "note_title": self.note_title,
             "note": self.note,
         }
+
     @classmethod
     def getAllPostNotes(cls, job_post_id):
         """Retrieves all post notes for a job_post_id and returns an array of post notes."""
@@ -223,10 +225,8 @@ class PostNote(db.Model):
         post_notes = cls.query.filter_by(job_post_id=job_post_id).all()
         return post_notes
 
-def connect_db(app):
-    """Connect this database to provided Flask app."""
+    def connect_db(app):
+        """Connect this database to provided Flask app."""
 
-    db.app = app
-    db.init_app(app)
-
-
+        db.app = app
+        db.init_app(app)
