@@ -1,9 +1,12 @@
 .NewTaskForm {
   display: flex;
   flex-direction: column;
-  width: 20rem;
+  width: 90%;
   margin: auto;
   margin-bottom: 1.5rem;
+  background-color: rgb(53, 53, 56);
+  padding: 0.7rem;
+  border-radius: 10px;
 }
 
 .NewTaskForm > * {
@@ -19,7 +22,7 @@
 }
 
 .NewTaskForm > textarea {
-  padding-top: 0.5rem;
+  padding-top: 0.7rem;
   font-family: sans-serif;
   max-width: 100%; /* prevent over-stretching textarea*/
 }
