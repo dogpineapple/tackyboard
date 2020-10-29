@@ -21,11 +21,12 @@ function NewTaskForm() {
     // const resp = await axios.post('http://localhost:5000/job-posts/new', formData);
     // console.log('response...', resp.data);
   }
-
+  
+  //LOW PRIORITY TODO: consider making a character count in the form inputs.
   return (
     <form className="NewTaskForm" onSubmit={handleSubmit}>
-      <input placeholder="Taskname" name="taskname" value={formData.taskname} onChange={handleChange} />
-      <textarea placeholder="Description" name="description" value={formData.description} onChange={handleChange} />
+      <input maxlength="75" placeholder="Taskname" name="taskname" value={formData.taskname} onChange={handleChange} />
+      <textarea maxlength="200" placeholder="Description" name="description" value={formData.description} onChange={handleChange} />
       <select name="status" id="status">
         <option value="1">Planned</option>
         <option value="2">In Progress</option>
