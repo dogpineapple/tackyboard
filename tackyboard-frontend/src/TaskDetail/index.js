@@ -11,7 +11,7 @@ function TaskDetail({ task }) {
     <div className="TaskDetail">
       <h1 className="TaskDetail-title">{task.title}</h1>
       <p className="TaskDetail-description">{task.description}</p>
-      <span className="TaskDetail-status">{task.status}</span>
+      <p className="TaskDetail-status tooltip">{task.status.toUpperCase()}<span className="TaskListCard-tooltiptext tooltiptext">Change</span></p>
       {
         task.tackycards?.length > 0 && task.tackycards?.map(card => (
           <TackyCard key={card.id} title={card.title} body={card.body} />

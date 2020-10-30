@@ -12,7 +12,7 @@ function TaskListCard({ title, description, status }) {
     <div className="TaskListCard">
       <h1 className="TaskListCard-title">{title}</h1>
       <p className="TaskListCard-description">{description}</p>
-      <span className="TaskListCard-status">{status}</span>
+      <p className="TaskListCard-status tooltip">{status.toUpperCase()}<span className="TaskListCard-tooltiptext tooltiptext">Change</span></p>
     </div>
   )
 }
