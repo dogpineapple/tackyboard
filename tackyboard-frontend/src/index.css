@@ -51,8 +51,8 @@ body {
   border-radius: 6px;
   position: absolute;
   z-index: 1;
-  bottom: 110%;
-  left: 75%;
+  bottom: 90%;
+  left: 105%;
   margin-left: -50px;
   font-size: 1.4rem;
   opacity: 0;
@@ -63,7 +63,6 @@ body {
   visibility: visible;
   opacity: 0.4;
 }
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
