@@ -7,7 +7,7 @@ from flask_login import (
     login_user,
     logout_user,
 )
-from models import db, connect_db, User, JobPost, PostNote
+from models import db, connect_db, User, Task, Tackynote
 from flask_cors import CORS
 from functools import wraps
 import jwt
@@ -21,7 +21,7 @@ app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL", "postgresql:///tackyboard"
 )
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ECHO"] = True
+app.config["SQLALCHEMY_ECHO"] = False
 app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "dianaiscoolaf")
 
 connect_db(app)
@@ -104,25 +104,25 @@ def userUpdate(user_id):
 
 
 ####################
-# JOB POSTS ROUTES #
+# TASK ROUTES #
 ####################
 
-@app.route("/job-posts", methods=["GET"])
+@app.route("/tasks", methods=["GET"])
 @token_required
 def get_job_posts(user):
-    """Retrieve all job posts for a user."""
+    """Retrieve all tasks for a user."""
 
     # query for the job posts in the database
-    job_posts = JobPost.getAllJobPosts(user.user_id)
+    tasks = Task.getAllTasks(user.user_id)
 
     # list comprehension to serialize all the job_post
-    return ({"job_posts": [job_post.serialize() for job_post in job_posts]}, 200)
+    return ({"tasks": [task.serialize() for task in tasks]}, 200)
 
 
-@app.route("/job-posts", methods=["POST"])
+@app.route("/tasks", methods=["POST"])
 @token_required
-def add_job_post(user):
-    """Add a job posting card.
+def add_task(user):
+    """Add a task card.
     Request object expects: the job listing URL, origin OR form data for self-input
 
     If the form isn't valid, return error.
@@ -141,11 +141,11 @@ def add_job_post(user):
         origin_name = request.json["origin_name"]
         job_description = request.json["job_description"]
 
-        new_job_post = JobPost.add(
+        new_task = Task.add(
             post_url, company, position, origin_name, user_id)
 
         new_post_note = PostNote(
-            job_post_id=new_job_post.job_post_id,
+            job_post_id=new_task.job_post_id,
             note=job_description,
             note_title="Job Listing Details",
         )
@@ -153,53 +153,53 @@ def add_job_post(user):
         db.session.commit()
 
     except Exception as e:
-        return (f"error occurred when creating the job post, {e}", 400)
+        return (f"error occurred when creating the task, {e}", 400)
 
     return (
         {
-            "job_post": new_job_post.serialize(),
+            "task": new_task.serialize(),
             "post_notes": [new_post_note.serialize()],
         },
         201,
     )
 
 
-@app.route("/job-posts/<job_post_id>", methods=["DELETE"])
-def remove_job_post(job_post_id):
+@app.route("/tasks/<task_id>", methods=["DELETE"])
+def remove_task(task_id):
     """
-    Removes a job post by job id.
+    Removes a job post by task id.
     Returns a json message confirmation of deletion success.
     """
 
-    JobPost.query.filter_by(job_post_id=job_post_id).delete()
+    Task.query.filter_by(task_id=task_id).delete()
     db.session.commit()
 
-    return ({"message": f"Job Post #{job_post_id} has been deleted"}, 200)
+    return ({"message": f"Task #{task_id} has been deleted"}, 200)
 
 #####################
-# POST NOTES ROUTES #
+# TACKYNOTES ROUTES #
 #####################
 
 
-@app.route("/job-posts/<job_post_id>/post-notes", methods=["POST"])
+@app.route("/tasks/<task_id>/tackynotes", methods=["POST"])
 @token_required
-def add_post_note(user, job_post_id):
+def add_post_note(user, task_id):
     """
-    adds post note by job id
+    adds tacky note by task id
     Returns a json message of post note additions
     """
     try:
-        post_note_title = request.json["note_title"]
+        tackynote_title = request.json["note_title"]
         note = request.json["note"]
-        new_post_note = PostNote(
-            job_post_id=job_post_id, note=note, note_title=post_note_title)
-        db.session.add(new_post_note)
+        new_tackynote = Tackynote(
+            task_id=task_id, note=note, note_title=tackynote_title)
+        db.session.add(new_tackynote)
         db.session.commit()
     except Exception as e:
         return(f"error occurred when creating new post note, {e}", 400)
     return (
         {
-            "post_note": new_post_note.serialize(),
+            "tackynote": new_tackynote.serialize(),
         },
         201,
     )
@@ -207,13 +207,13 @@ def add_post_note(user, job_post_id):
 # implement route/view fxn to add a new post note to a job post
 
 
-@app.route("/job-posts/<job_post_id>/post-notes", methods=["GET"])
+@app.route("/tasks/<task_id>/post-notes", methods=["GET"])
 @token_required
-def get_post_notes(user, job_post_id):
+def get_post_notes(user, task_id):
     """Retrieve all post notes for a user."""
 
     # query for the job posts in the database
-    post_notes = PostNote.getAllPostNotes(job_post_id)
+    tackynotes = Tackynote.getAllTackynotes(task_id)
 
     # list comprehension to serialize all the job_post
-    return ({"post_notes": [post_note.serialize() for post_note in post_notes]}, 200)
+    return ({"tackynotes": [tackynotes.serialize() for tackynote in tackynotes]}, 200)

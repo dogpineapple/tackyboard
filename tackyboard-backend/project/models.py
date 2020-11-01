@@ -1,7 +1,7 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
-
+from sqlalchemy.exc import IntegrityError
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
@@ -21,6 +21,16 @@ class User(db.Model):
     def __repr__(self):
         return f"<User #{self.user_id}: {self.email}>"
 
+    def serialize(self):
+        """Serialize the instance object of a user."""
+        return {
+            "user_id": self.user_id,
+            "first_name": self.fname,
+            "last_name": self.lname,
+            "email": self.email,
+            "created_date": self.created_date,
+        }
+
     @classmethod
     def register(cls, email, password, first_name, last_name):
         """ Register a new user """
@@ -33,8 +43,8 @@ class User(db.Model):
         try:
             db.session.add(user)
             db.session.commit()
-        # FIX: what kind of error is thrown here?
-        except:
+        except IntegrityError:
+            # Should be a sqlalchemy.exc.IntegrityError for duplicates
             return {"error": "E-mail already exists in the database."}
 
         return user
@@ -53,16 +63,6 @@ class User(db.Model):
                 return user
 
         return False
-
-    def serialize(self):
-        """Serialize the instance object of a user."""
-        return {
-            "user_id": self.user_id,
-            "first_name": self.fname,
-            "last_name": self.lname,
-            "email": self.email,
-            "created_date": self.created_date,
-        }
 
 
 class Status(db.Model):
@@ -112,15 +112,15 @@ class Tackyboard(db.Model):
     user = db.relationship("User", backref="tackyboards")
 
 
-#TODO: Update to `Task` , tablename should be `tasks`
+# TODO: Update to `Task` , tablename should be `tasks`
 # make sure to change columns!
 # change the relationship from User to Tackyboard
 # Also add tests.
-class JobPost(db.Model):
+class Task(db.Model):
 
-    __tablename__ = "job_posts"
+    __tablename__ = "tasks"
 
-    job_post_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    task_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     post_url = db.Column(db.String, nullable=False)
     # company = db.Column(db.String(50), nullable=False)
     status_id = db.Column(
@@ -133,7 +133,7 @@ class JobPost(db.Model):
     origin_name = db.Column(db.String(50), nullable=False, default="Unknown")
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow())
-        last_status_update = db.Column(
+    last_status_update = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow()
     )
     interview_date_time = db.Column(db.DateTime, nullable=True)
@@ -141,14 +141,14 @@ class JobPost(db.Model):
         db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
     )
 
-    #TODO: change from `user` to `tackyboard`
-    user = db.relationship("User", backref="job_posts")
-    status = db.relationship("ApplicationStatus", backref="job_posts")
+    # TODO: change from `user` to `tackyboard`
+    user = db.relationship("User", backref="tasks")
+    status = db.relationship("Status", backref="tasks")
 
     def serialize(self):
         """Serialize the instance object to be sent as JSON."""
         return {
-            "job_post_id": self.job_post_id,
+            "task_id": self.task_id,
             "post_url": self.post_url,
             "company": self.company,
             "application_status_id": self.application_status_id,
@@ -163,11 +163,11 @@ class JobPost(db.Model):
     @classmethod
     def add(cls, post_url, company, position, origin_name, user_id):
         """
-        Creates an instance of JobPost and inserts into the database.
-        Returns a job_post instance.
+        Creates a Task instance and inserts into the database.
+        Returns a task instance.
         """
 
-        new_job_post = JobPost(
+        new_task = Task(
             post_url=post_url,
             company=company,
             position=position,
@@ -176,57 +176,55 @@ class JobPost(db.Model):
         )
 
         try:
-            db.session.add(new_job_post)
-            db.session.flush()  # use flush() to access the unique primary key `job_post_id`
+            db.session.add(new_task)
+            db.session.flush()  # use flush() to access the unique primary key `task_id`
         except Exception as e:
             return {"error": {"Database add error": e}}
 
-        return new_job_post
+        return new_task
 
     @classmethod
-    def getAllJobPosts(cls, user_id):
-        """Retrieves all job posts for a user_id and returns an array of job posts."""
+    def getAllTasks(cls, user_id):
+        """Retrieves all tasks for a user_id and returns an array of job posts."""
 
-        job_posts = cls.query.filter_by(user_id=user_id).all()
-        return job_posts
+        tasks = cls.query.filter_by(user_id=user_id).all()
+        return tasks
 
 
-#TODO: Update to be `Tackynote`, tablename to `tackynotes`
-# make sure to change columns (if needed)!
-class PostNote(db.Model):
+class Tackynote(db.Model):
 
-    __tablename__ = "post_notes"
+    __tablename__ = "tackynote"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    #TODO: This should be changed to `task_id`
-    job_post_id = db.Column(
+    task_id = db.Column(
         db.Integer,
-        db.ForeignKey("job_posts.job_post_id", ondelete="CASCADE"),
+        db.ForeignKey("tasks.task_id", ondelete="CASCADE"),
         nullable=False,
     )
     note_title = db.Column(db.Text, nullable=False)
     note = db.Column(db.Text, nullable=False)
 
-    job_post = db.relationship("JobPost", backref="post_notes")
+    task = db.relationship("Task", backref="tackynotes")
 
     def serialize(self):
         """Serialize the instance object to be sent as JSON."""
         return {
-            "post_note_id": self.id,
-            "job_post_id": self.job_post_id,
+            "tackynote_id": self.id,
+            "task_id": self.task_id,
             "note_title": self.note_title,
             "note": self.note,
         }
 
     @classmethod
-    def getAllPostNotes(cls, job_post_id):
-        """Retrieves all post notes for a job_post_id and returns an array of post notes."""
+    def getAllTackyNotes(cls, task_id):
+        """Retrieves all tacky notes for a task_id and returns an array of post notes."""
 
-        post_notes = cls.query.filter_by(job_post_id=job_post_id).all()
-        return post_notes
+        tackynotes = cls.query.filter_by(task_id=task_id).all()
+        return tackynotes
 
-    def connect_db(app):
-        """Connect this database to provided Flask app."""
 
-        db.app = app
-        db.init_app(app)
+def connect_db(app):
+    """Connect this database to provided Flask app."""
+
+    db.app = app
+    db.init_app(app)
