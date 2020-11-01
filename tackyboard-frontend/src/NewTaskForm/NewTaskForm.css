@@ -1,0 +1,41 @@
+.NewTaskForm {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: auto;
+  margin-bottom: 1.5rem;
+  background-color: rgb(53, 53, 56);
+  padding: 0.7rem;
+  border-radius: 10px;
+}
+
+.NewTaskForm > * {
+  border: none;
+  border-radius: 5px;
+  margin-bottom: 3px;
+}
+
+.NewTaskForm > input, textarea {
+  padding: 0 1.5rem;
+  height: 3rem;
+  border-radius: 5px;
+}
+
+.NewTaskForm > textarea {
+  padding-top: 0.7rem;
+  font-family: sans-serif;
+  max-width: 100%; /* prevent over-stretching textarea*/
+}
+
+.NewTaskForm > select {
+  padding-left: 1.2rem;
+}
+
+.NewTaskForm > button {
+  margin-top: 0.3rem;
+  padding: 0.5rem 0;
+  border: none;
+  color: white;
+  text-transform: uppercase;
+  background-color: rgb(73, 167, 255)
+}

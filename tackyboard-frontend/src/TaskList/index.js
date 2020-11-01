@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './TaskList.css';
 import TaskListCard from '../TaskListCard';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import NewTaskForm from '../NewTaskForm';
 
 /**
  * Child of `Taskboard` component.
@@ -11,12 +12,23 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
  *    the left-most window of the `Taskboard` component. 
  */
 function TaskList(tasks) {
+  const [showForm, setShowForm] = useState(false);
   // for each task in tasks... (use `.map`)
-    // create a TaskListCard 
+  // create a TaskListCard 
+
+  //displays new task card form
+  const handleShowForm = (evt) => {
+    setShowForm(!showForm);
+  }
+
   return (
     <div className="TaskList" >
-      <FontAwesomeIcon className="TaskList-new-task-button" icon={faPlusCircle} size="3x" onClick={() => console.log("-new Task Form modal pop-up here-")}/>
-      <TaskListCard id="1" title="Develop Tackyboard" description="Finish the code!" status="In progress"/>
+      <div className="TaskList-new-task-button tooltip">
+        <FontAwesomeIcon icon={faPlusCircle} size="3x" onClick={handleShowForm} ></FontAwesomeIcon>
+        <span className="tooltiptext">New task</span>
+      </div>
+      {showForm && <NewTaskForm />}
+      <TaskListCard id="1" title="Develop Tackyboard" description="Finish the code!" status="In progress" />
     </div>
   );
 }

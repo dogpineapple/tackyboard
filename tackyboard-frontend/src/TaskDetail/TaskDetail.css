@@ -14,15 +14,22 @@
 }
 
 .TaskDetail-status {
-  position: absolute;
-  top: 4%;
-  right: 5%;
+  margin-left: 3%;
+  margin-top: 1%;
   background-color: rgb(255, 150, 109);
   padding: 1rem 1.1rem;
   border-radius: 8px;
   color:white;
-  text-transform: uppercase;
   font-weight: 700;
   font-size: 1.4rem;
   cursor: pointer;
+}
+
+.TaskDetail-status, .TaskDetail-status > .tooltiptext{
+  bottom: -50%;
+}
+
+.TaskDetail-icon-btn {
+  float: right;
+  margin-right: 5%;
 }

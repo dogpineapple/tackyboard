@@ -1,5 +1,11 @@
 .TaskList-new-task-button {
   cursor: pointer;
-  margin: 1rem 0 1.5rem 8%;
-  color: rgb(145, 143, 143);
+  align-self: flex-end;
+  margin: 0 5% 0.7rem 0;
+  color: rgb(179, 179, 179);
+}
+
+.TaskList {
+  display: flex;
+  flex-direction: column;
 }
