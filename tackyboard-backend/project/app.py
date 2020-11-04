@@ -7,7 +7,7 @@ from flask_login import (
     login_user,
     logout_user,
 )
-from models import db, connect_db, User, Task, Tackynote
+from models import db, connect_db, User, Task, Tackynote, Tackyboard
 from flask_cors import CORS
 from functools import wraps
 import jwt
@@ -73,7 +73,12 @@ def register():
     resp = User.register(**request.json)
 
     if isinstance(resp, User):
-        return (resp.serialize(), 201)
+        encoded_jwt = jwt.encode(
+            {"user_id": resp.user_id, "email": resp.email},
+            app.config["SECRET_KEY"],
+            algorithm="HS256",
+        )
+        return ({"_token": encoded_jwt.decode("utf-8") , "user": resp.serialize()}, 201)
 
     return (resp, 400)
 
@@ -104,16 +109,63 @@ def userUpdate(user_id):
 
 
 ####################
+# TACKYBOARD ROUTES #
+####################
+
+@app.route("/tackyboards", methods=["GET"])
+@token_required
+def get_tackyboards(user):
+    """Retrieve all tackyboards for a user."""
+
+    # query for the job posts in the database
+    tackyboards = Tackyboard.getAllTackyboards(user.user_id)
+
+    # list comprehension to serialize all the job_post
+    return ({"tackyboards": [tackyboard.serialize() for tackyboard in tackyboards]}, 200)
+
+
+@app.route("/tackyboards", methods=["POST"])
+@token_required
+def add_tackyboard(user):
+   """Create a new tackyboard for a user, expects `user_id` and `name` (of tackyboard)"""
+    try:
+        user_id = user.user_id
+        name = request.json["name"]
+
+        new_tackyboard = Tackyboard(
+            user_id=user_id,
+            name=name
+        )
+        db.session.add(new_tackyboard)
+        db.session.commit()
+
+    except Exception as e:
+        return (f"error occurred when creating the tackyboard, {e}", 400)
+
+    return (
+        {
+            "tackyboard": new_tackyboard.serialize(),
+        },
+        201,
+    )
+
+#TODO: DELETE route for a tackyboard -> should delete a tackyboard
+# and return { message: "successfully deleted tackyboard_id: [...]"}
+
+#TODO: PATCH route for a tackyboard -> should allow renaming a tackyboard
+# and return the entire serialized tackyboard
+
+####################
 # TASK ROUTES #
 ####################
 
 @app.route("/tasks", methods=["GET"])
 @token_required
-def get_job_posts(user):
-    """Retrieve all tasks for a user."""
+def get_tasks(tackyboard):
+    """Retrieve all tasks for a tackyboard."""
 
     # query for the job posts in the database
-    tasks = Task.getAllTasks(user.user_id)
+    tasks = Task.getAllTasks(tackyboard.tackyboard_id)
 
     # list comprehension to serialize all the job_post
     return ({"tasks": [task.serialize() for task in tasks]}, 200)

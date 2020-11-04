@@ -108,6 +108,24 @@ class Tackyboard(db.Model):
 
     user = db.relationship("User", backref="tackyboards")
 
+    def serialize(self):
+        """Serialize the instance object to be sent as JSON."""
+        return {
+            "tackyboard_id": self.tackyboard_id,
+            "name": self.name,
+            "created_date": self.created_date,
+            "last_updated": self.last_updated,
+            "user_id": self.user_id,
+        }
+
+
+    @classmethod
+    def getAllTackyboards(cls, user_id):
+        """Retrieves all tackyboards for a user(id) and returns an array of tackyboards."""
+
+        tackyboards = cls.query.filter_by(user_id=user_id).all()
+        return tackyboards
+
 
 #TODO: Also add tests.
 class Task(db.Model):
