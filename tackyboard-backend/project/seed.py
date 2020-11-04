@@ -1,5 +1,5 @@
 from app import db
-from models import User, ApplicationStatus, ClickCopyNote
+from models import User, Status, ClickCopyNote
 db.drop_all()
 db.create_all()
 
@@ -12,7 +12,7 @@ statuses = [
 ]
 
 db.session.add_all(
-    [ApplicationStatus(status_id=key, status=val) for (key, val) in application_statuses]
+    [Status(status_id=key, status=val) for (key, val) in statuses]
 )
 # db.session.add_all([UrlOrigin(id=key, origin_name=val) for (key, val) in url_origins])
 
