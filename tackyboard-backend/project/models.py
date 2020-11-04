@@ -121,28 +121,25 @@ class Task(db.Model):
     __tablename__ = "tasks"
 
     task_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    post_url = db.Column(db.String, nullable=False)
-    # company = db.Column(db.String(50), nullable=False)
     status_id = db.Column(
         db.Integer,
         db.ForeignKey("statuses.status_id"),
         nullable=False,
         default=0,
     )
-    position = db.Column(db.String(50), nullable=False, default="Unknown")
-    origin_name = db.Column(db.String(50), nullable=False, default="Unknown")
+    task_description = db.Column(db.String(100), nullable=True)
     created_date = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow())
     last_status_update = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow()
     )
-    interview_date_time = db.Column(db.DateTime, nullable=True)
+    deadline = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(
         db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
     )
 
     # TODO: change from `user` to `tackyboard`
-    user = db.relationship("User", backref="tasks")
+    tackyboard = db.relationship("Tackyboard", backref="tasks")
     status = db.relationship("Status", backref="tasks")
 
     def serialize(self):
