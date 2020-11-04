@@ -2,6 +2,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from sqlalchemy.exc import IntegrityError
+
 bcrypt = Bcrypt()
 db = SQLAlchemy()
 
@@ -15,8 +16,7 @@ class User(db.Model):
     password = db.Column(db.String, nullable=False)
     fname = db.Column(db.String(60), nullable=False)
     lname = db.Column(db.String(60), nullable=False)
-    created_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow)
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return f"<User #{self.user_id}: {self.email}>"
@@ -37,8 +37,7 @@ class User(db.Model):
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
 
-        user = User(email=email, password=hashed_pwd,
-                    fname=first_name, lname=last_name)
+        user = User(email=email, password=hashed_pwd, fname=first_name, lname=last_name)
 
         try:
             db.session.add(user)
@@ -68,13 +67,14 @@ class User(db.Model):
 class Status(db.Model):
     """
     Allows the user to identify the current status of a task.
-    Possible statuses are:   
+    Possible statuses are:
         (0, "planned"),
         (1, "in progress"),
         (2, "done"),
         (3, "dropped"),
         (4, "pending")
     """
+
     __tablename__ = "statuses"
 
     status_id = db.Column(db.Integer, primary_key=True)
@@ -85,8 +85,7 @@ class ClickCopyNote(db.Model):
 
     __tablename__ = "click_copy_notes"
 
-    clickcopy_note_id = db.Column(
-        db.Integer, primary_key=True, autoincrement=True)
+    clickcopy_note_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(
         db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=False
     )
@@ -102,9 +101,7 @@ class Tackyboard(db.Model):
     tackyboard_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(50), default="My tackyboard", nullable=False)
     created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
-    last_updated = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow()
-    )
+    last_updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     user_id = db.Column(
         db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
     )
@@ -112,10 +109,7 @@ class Tackyboard(db.Model):
     user = db.relationship("User", backref="tackyboards")
 
 
-# TODO: Update to `Task` , tablename should be `tasks`
-# make sure to change columns!
-# change the relationship from User to Tackyboard
-# Also add tests.
+#TODO: Also add tests.
 class Task(db.Model):
 
     __tablename__ = "tasks"
@@ -127,15 +121,17 @@ class Task(db.Model):
         nullable=False,
         default=0,
     )
+    task_title = db.Column(db.String(75), nullable=True)
     task_description = db.Column(db.String(100), nullable=True)
-    created_date = db.Column(
-        db.DateTime, nullable=False, default=datetime.utcnow())
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow())
     last_status_update = db.Column(
         db.DateTime, nullable=False, default=datetime.utcnow()
     )
     deadline = db.Column(db.DateTime, nullable=True)
-    user_id = db.Column(
-        db.Integer, db.ForeignKey("users.user_id", ondelete="CASCADE"), nullable=True
+    tackyboard_id = db.Column(
+        db.Integer,
+        db.ForeignKey("tackyboards.tackyboard_id", ondelete="CASCADE"),
+        nullable=True,
     )
 
     # TODO: change from `user` to `tackyboard`
@@ -146,30 +142,27 @@ class Task(db.Model):
         """Serialize the instance object to be sent as JSON."""
         return {
             "task_id": self.task_id,
-            "post_url": self.post_url,
-            "company": self.company,
-            "application_status_id": self.application_status_id,
-            "position": self.position,
-            "origin_name": self.origin_name,
+            "status_id": self.status_id,
+            "task_title": self.task_title,
+            "task_description": self.task_description,
             "created_date": self.created_date,
             "last_status_update": self.last_status_update,
-            "interview_date_time": self.interview_date_time,
-            "user_id": self.user_id,
+            "deadline": self.deadline,
+            "tackyboard_id": self.tackyboard_id,
         }
 
     @classmethod
-    def add(cls, post_url, company, position, origin_name, user_id):
+    def add(cls, task_title, task_description, tackyboard_id, deadline=None):
         """
         Creates a Task instance and inserts into the database.
         Returns a task instance.
         """
 
         new_task = Task(
-            post_url=post_url,
-            company=company,
-            position=position,
-            origin_name=origin_name,
-            user_id=user_id,
+            task_title=task_title,
+            task_description=task_description,
+            tackyboard_id=tackyboard_id,
+            deadline=deadline,
         )
 
         try:
@@ -181,10 +174,10 @@ class Task(db.Model):
         return new_task
 
     @classmethod
-    def getAllTasks(cls, user_id):
-        """Retrieves all tasks for a user_id and returns an array of job posts."""
+    def getAllTasks(cls, tackyboard_id):
+        """Retrieves all tasks for a tackyboard(id) and returns an array of tasks."""
 
-        tasks = cls.query.filter_by(user_id=user_id).all()
+        tasks = cls.query.filter_by(tackyboard_id=tackyboard_id).all()
         return tasks
 
 
@@ -192,7 +185,7 @@ class Tackynote(db.Model):
 
     __tablename__ = "tackynote"
 
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    tackynote_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     task_id = db.Column(
         db.Integer,
         db.ForeignKey("tasks.task_id", ondelete="CASCADE"),
@@ -206,7 +199,7 @@ class Tackynote(db.Model):
     def serialize(self):
         """Serialize the instance object to be sent as JSON."""
         return {
-            "tackynote_id": self.id,
+            "tackynote_id": self.tackynote_id,
             "task_id": self.task_id,
             "note_title": self.note_title,
             "note": self.note,
