@@ -126,6 +126,13 @@ class Tackyboard(db.Model):
         tackyboards = cls.query.filter_by(user_id=user_id).all()
         return tackyboards
 
+    @classmethod
+    def deleteTackyboard(cls, tackyboard_id):
+        """Deletes a tackyboard by tackyboard_id."""
+
+        cls.query.filter_by(tackyboard_id=tackyboard_id).first().delete()
+        db.session.commit()
+        return { "message": f"Successfully deleted Tackyboard #{tackyboard_id}!" }
 
 #TODO: Also add tests.
 class Task(db.Model):
@@ -198,6 +205,13 @@ class Task(db.Model):
         tasks = cls.query.filter_by(tackyboard_id=tackyboard_id).all()
         return tasks
 
+    @classmethod
+    def deleteTask(cls, task_id):
+        """Deletes a task by task_id."""
+
+        cls.query.filter_by(task_id=task_id).first().delete()
+        db.session.commit()
+        return { "message": f"Successfully deleted Task #{task_id}!" }
 
 class Tackynote(db.Model):
 
@@ -229,6 +243,14 @@ class Tackynote(db.Model):
 
         tackynotes = cls.query.filter_by(task_id=task_id).all()
         return tackynotes
+
+    @classmethod
+    def deleteTackyNote(cls, tackynote_id):
+        """Deletes a tackynote by tackynote_id."""
+
+        cls.query.filter_by(tackynote_id=tackynote_id).first().delete()
+        db.session.commit()
+        return { "message": f"Successfully deleted Tackynote #{tackynote_id}!" }
 
 
 def connect_db(app):
