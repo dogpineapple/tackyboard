@@ -149,29 +149,43 @@ def add_tackyboard(user):
         201,
     )
 
-#TODO: DELETE route for a tackyboard -> should delete a tackyboard
-# and return { message: "successfully deleted tackyboard_id: [...]"}
+@app.route("/tackyboards/<tackyboard_id>", methods=["DELETE"])
+@token_required
+def delete_tackyboard(user, tackyboard_id):
+    """
+    Deletes a tackyboard by tackyboard_id.
+    Returns { "message": "Deleted Tackyboard #[n]" }
+    """
+
+    message = Tackyboard.deleteTackyboard(tackyboard_id)
+    return (message, 200)
+
 
 #TODO: PATCH route for a tackyboard -> should allow renaming a tackyboard
 # and return the entire serialized tackyboard
+@app.route("/tackyboards/<tackyboard_id>", methods=["PATCH"])
+@token_required
+def patch_tackyboard(user, tackyboard_id):
+    #TODO: implement code for the patch.
+    return ({ "message": "route is under development"}, 200)
 
 ####################
 # TASK ROUTES #
 ####################
 
-@app.route("/tasks", methods=["GET"])
+@app.route("/tackyboard/<tackyboard_id>/tasks", methods=["GET"])
 @token_required
-def get_tasks(tackyboard):
+def get_tasks(user, tackyboard_id):
     """Retrieve all tasks for a tackyboard."""
 
     # query for the job posts in the database
-    tasks = Task.getAllTasks(tackyboard.tackyboard_id)
+    tasks = Task.getAllTasks(tackyboard_id)
 
     # list comprehension to serialize all the job_post
     return ({"tasks": [task.serialize() for task in tasks]}, 200)
 
 
-@app.route("/tasks", methods=["POST"])
+@app.route("/tackyboard/<tackyboard_id>/tasks", methods=["POST"])
 @token_required
 def add_task(user):
     """Add a task card.
@@ -216,8 +230,8 @@ def add_task(user):
     )
 
 
-@app.route("/tasks/<task_id>", methods=["DELETE"])
-def remove_task(task_id):
+@app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>", methods=["DELETE"])
+def delete_task(tackyboard_id, task_id):
     """
     Removes a job post by task id.
     Returns a json message confirmation of deletion success.
@@ -233,9 +247,9 @@ def remove_task(task_id):
 #####################
 
 
-@app.route("/tasks/<task_id>/tackynotes", methods=["POST"])
+@app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>/tackynotes", methods=["POST"])
 @token_required
-def add_post_note(user, task_id):
+def add_tackynotes(user, tackyboard_id, task_id):
     """
     adds tacky note by task id
     Returns a json message of post note additions
@@ -256,13 +270,21 @@ def add_post_note(user, task_id):
         201,
     )
 
-# implement route/view fxn to add a new post note to a job post
-
-
-@app.route("/tasks/<task_id>/post-notes", methods=["GET"])
+@app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>/tackynotes/<tackynote_id>", methods=["DELETE"])
 @token_required
-def get_post_notes(user, task_id):
-    """Retrieve all post notes for a user."""
+def delete_tackynote(user, tackyboard_id, task_id, tackynote_id):
+    """
+    Deletes tacky note by task id.
+    Returns message on successful deletion.
+    """
+    message = Tackynote.deleteTackyNote(tackynote_id)
+    return (message, 200)
+
+
+@app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>/tackynotes", methods=["GET"])
+@token_required
+def get_tackynotes(user, tackyboard_id, task_id):
+    """Retrieve all tackynotes for a user."""
 
     # query for the job posts in the database
     tackynotes = Tackynote.getAllTackynotes(task_id)
