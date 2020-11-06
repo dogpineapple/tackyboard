@@ -188,14 +188,8 @@ def get_tasks(user, tackyboard_id):
 @app.route("/tackyboard/<tackyboard_id>/tasks", methods=["POST"])
 @token_required
 def add_task(user, tackyboard_id):
-    """Add a task card.
-    Request object expects: the job listing URL, origin OR form data for self-input
-
-    If the form isn't valid, return error.
-
-    If a URL is provided, then run webscraper on the URL. The scraping steps will be based
-        on the origin_name provided.
-
+    """
+    Add a task to a tackyboard.
     If successful, return json object.
     """
 
