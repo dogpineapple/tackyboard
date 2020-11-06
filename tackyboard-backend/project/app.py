@@ -127,14 +127,15 @@ def get_tackyboards(user):
 @app.route("/tackyboards", methods=["POST"])
 @token_required
 def add_tackyboard(user):
-   """Create a new tackyboard for a user, expects `user_id` and `name` (of tackyboard)"""
+    """Create a new tackyboard for a user, expects `user_id` and `name` (of tackyboard)"""
     try:
+        what = "fk"
         user_id = user.user_id
         name = request.json["name"]
 
         new_tackyboard = Tackyboard(
-            user_id=user_id,
-            name=name
+        user_id=user_id,
+        name=name
         )
         db.session.add(new_tackyboard)
         db.session.commit()
@@ -143,10 +144,10 @@ def add_tackyboard(user):
         return (f"error occurred when creating the tackyboard, {e}", 400)
 
     return (
-        {
-            "tackyboard": new_tackyboard.serialize(),
-        },
-        201,
+    {
+    "tackyboard": new_tackyboard.serialize(),
+    },
+    201,
     )
 
 @app.route("/tackyboards/<tackyboard_id>", methods=["DELETE"])
