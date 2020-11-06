@@ -19,10 +19,10 @@ function NavBar({ isLoggedIn, setLoggedIn }) {
         isLoggedIn ?
           <ul className="NavBar-list">
             <li className="NavBar-item">
-              <a href="/">TACKYBOARDS</a>
+              <a href="/tackyboards">TACKYBOARDS</a>
             </li>
             <li className="NavBar-item">
-              <a href={`/users/${localStorage.getItem("uid")}`}>SETTINGS</a>
+              <a href={`/users/${localStorage.getItem("user_id")}`}>SETTINGS</a>
             </li>
             <li className="NavBar-item">
               <span className="NavBar-item" onClick={handleLogout}>LOGOUT</span>

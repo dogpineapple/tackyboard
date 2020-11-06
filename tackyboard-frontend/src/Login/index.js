@@ -10,10 +10,18 @@ function Login({setLoggedIn}) {
   const history = useHistory();
 
   const handleLogin = async (data) => {
+    localStorage.clear();
     let resp = await axios.post(loginUrl, data);
     console.log(resp.data);
     if (resp.data["_token"]) {
+
+      let token = resp.data["_token"];
+      let tokenParts = token.split(".");
+      let userInfo = JSON.parse(atob(tokenParts[1]));
+      localStorage.setItem("user_id", userInfo.user_id);
+      localStorage.setItem("user_email", userInfo.email);
       localStorage.setItem("_token", resp.data["_token"]);
+
       setLoggedIn(true);
       history.push("/tackyboards");
     } else {

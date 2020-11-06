@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { BrowserRouter, useHistory, withRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Routes from './Routes';
 import NavBar from './NavBar';
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem("_token") ? true : false);
+
+  console.log("isloggedin...", isLoggedIn);
 
   return (
     <div className="App">
       <BrowserRouter>
-        <NavBar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn}/>
+        <NavBar isLoggedIn={isLoggedIn} setLoggedIn={setLoggedIn} />
         <Routes setLoggedIn={setLoggedIn} />
       </BrowserRouter>
     </div>
