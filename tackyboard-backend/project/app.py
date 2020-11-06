@@ -187,7 +187,7 @@ def get_tasks(user, tackyboard_id):
 
 @app.route("/tackyboard/<tackyboard_id>/tasks", methods=["POST"])
 @token_required
-def add_task(user):
+def add_task(user, tackyboard_id):
     """Add a task card.
     Request object expects: the job listing URL, origin OR form data for self-input
 
@@ -200,15 +200,11 @@ def add_task(user):
     """
 
     try:
-        user_id = user.user_id
-        post_url = request.json["post_url"]
-        company = request.json["company"]
-        position = request.json["position"]
-        origin_name = request.json["origin_name"]
-        job_description = request.json["job_description"]
-
-        new_task = Task.add(
-            post_url, company, position, origin_name, user_id)
+        task_title = request.json["task_title"]
+        task_description = request.json["task_description"]
+        deadline = request.json["deadline"] # can be None or a date.
+        
+        new_task = Task.add(task_title, task_description, tackyboard_id, deadline)
 
         new_post_note = PostNote(
             job_post_id=new_task.job_post_id,
