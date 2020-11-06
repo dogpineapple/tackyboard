@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-// import axios from 'axios';
 import './LoginForm.css';
 
-function LoginForm() {
+function LoginForm({handleLogin}) {
   const INITIAL_VALUES = { email: "", password: "" };
   const [formData, setFormData] = useState(INITIAL_VALUES);
   
@@ -13,7 +12,7 @@ function LoginForm() {
   
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    // const resp = await axios.post('http://localhost:5000/login', formData);
+    handleLogin(formData);
   }
 
   return (

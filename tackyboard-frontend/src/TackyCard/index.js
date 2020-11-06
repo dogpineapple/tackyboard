@@ -1,5 +1,5 @@
 import React from 'react';
-import "./TackyCard.css";
+import "./TackyCard.scss";
 
 function TackyCard({ title, body}) {
   return (

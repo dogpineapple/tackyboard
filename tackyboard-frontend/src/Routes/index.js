@@ -4,15 +4,23 @@ import Homepage from '../Homepage';
 import Taskboard from '../Taskboard';
 import Login from '../Login';
 import SignUp from '../SignUp';
+import Settings from '../Settings';
+import TaskboardList from '../TaskboardList';
 
-function Routes() {
+function Routes({setLoggedIn}) {
   return (
     <Switch>
-      <Route path="/tackyboard/:boardid">
+      <Route path="/tackyboards/:boardid">
         <Taskboard />
       </Route>
+      <Route path="/tackyboards">
+        <TaskboardList />
+      </Route>
+      <Route path="/users/:uid">
+        <Settings />
+      </Route>
       <Route path="/login">
-        <Login />
+        <Login setLoggedIn={setLoggedIn}/>
       </Route>
       <Route path="/signup">
         <SignUp />

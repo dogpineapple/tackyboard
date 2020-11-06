@@ -11,7 +11,7 @@
   font-size: 1.5rem;
 }
 
-.NavBar-item > a,
+.NavBar-item > a, span,
 .NavBar-item > a:visited {
   color: black;
 }
