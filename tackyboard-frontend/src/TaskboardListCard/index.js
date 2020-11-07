@@ -1,13 +1,13 @@
 import React from 'react';
+import moment from 'moment';
 import './TaskboardListCard.scss';
 
 
-function TaskboardListCard({ name, numActives, lastUpdated }) {
+function TaskboardListCard({ name, lastUpdated }) {
   return (
     <div className="TaskboardListCard">
       <h1>{name}</h1>
-      <div>{numActives} active tasks</div>
-      <div>Last updated {lastUpdated}.</div>
+      <div>Last updated {moment(lastUpdated).fromNow()} on {moment(lastUpdated).format('lll')}.</div>
     </div>
   )
 }

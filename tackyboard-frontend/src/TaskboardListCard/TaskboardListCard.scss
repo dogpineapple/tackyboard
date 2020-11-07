@@ -1,0 +1,9 @@
+@import "../mixins";
+
+.TaskboardListCard {
+  @include card-display;
+  margin: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
+  font-size: 1.4rem;
+}
+

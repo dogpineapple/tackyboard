@@ -1,27 +1,28 @@
 import React, { useState } from "react";
 // import "./NewTackyboardForm.css";
-// import axios from "axios";
+import axios from "axios";
+
+const addTackyboardUrl = "http://localhost:5000/tackyboards";
 
 /**
  * NewTackyboardForm component renders the controlled form for creating a new task.
  */
-function NewTackyboardForm() {
-  const INITIAL_VALUES = {user_id: localStorage.getItem("user_id") , name: "" };
+function NewTackyboardForm({ setShowForm, setTaskboards }) {
+  const INITIAL_VALUES = { _token: localStorage.getItem("_token"), name: "" };
   const [formData, setFormData] = useState(INITIAL_VALUES);
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
     setFormData(currData => ({ ...currData, [name]: value }));
-    console.log(formData);
   };
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    console.log(`submitted`, formData);
-    // const resp = await axios.post('http://localhost:5000/job-posts/new', formData);
-    // console.log('response...', resp.data);
+    const resp = await axios.post(addTackyboardUrl, formData);
+    setShowForm(false);
+    setTaskboards(currData => [...currData, resp.data.tackyboard]);
   }
-  
+
   //LOW PRIORITY TODO: consider making a character count in the form inputs.
   return (
     <form className="NewTackyboardForm" onSubmit={handleSubmit}>

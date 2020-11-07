@@ -1,24 +1,44 @@
-import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faMinusCircle } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
 import TaskboardListCard from '../TaskboardListCard';
 import './TaskboardList.scss';
+import NewTackyboardForm from '../NewTackyboardForm';
+import axios from 'axios';
 
+const getTackyboardsUrl = `http://localhost:5000/tackyboards?_token=${localStorage.getItem("_token")}`;
 
 function TaskboardList() {
+  const [showForm, setShowForm] = useState(false);
+  const [taskboards, setTaskboards] = useState([]);
 
-  const boards = [
-    {name: "Anime board", numActives: "6", lastUpdated: "yesterday"},
-    {name: "Fashion board", numActives: "4", lastUpdated: "2 days ago"},
-    {name: "Book board", numActives: "8", lastUpdated: "3 days ago"}
-  ]
+  useEffect(function getTaskboards() {
+    async function handleGetTaskboards() {
+      const resp = await axios.get(getTackyboardsUrl);
+      console.log("resp...", resp.data);
+      let respBoards = resp.data;
+      setTaskboards(respBoards.tackyboards);
+    }
+    handleGetTaskboards();
+  }, []);
+
+  console.log("taskboards...", taskboards);
 
   return (
     <div className="TaskboardList">
       <div className="TaskboardList-container">
-        <h1 className="TaskboardList-title">My Tackyboards</h1>
+        <div className="TaskboardList-title">
+          <h1 className="title">My Tackyboards</h1>
+          <FontAwesomeIcon className="TackyboardList-add-btn" icon={showForm ? faMinusCircle : faPlusCircle} size="2x" onClick={() => setShowForm(!showForm)} />
+          {showForm && <div className="TaskboardList-form">
+            <NewTackyboardForm setShowForm={setShowForm} setTaskboards={setTaskboards} />
+          </div>}
+        </div>
         <div className="TaskboardList-list-container">
           <ul>
-            {boards.map(board => 
-            <TaskboardListCard key={board.name} name={board.name} numActives={board.numActives} lastUpdated={board.lastUpdated}/>)
+            {taskboards.map(board => {
+              let date = new Date(board.last_updated);
+              return <TaskboardListCard key={board.last_updated} name={board.name} lastUpdated={date.toLocaleString()} />})
             }
           </ul>
         </div>

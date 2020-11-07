@@ -1,22 +1,28 @@
 @import '../variable';
 
-.TaskboardList {
-  border: $debug;
-}
 
 .TaskboardList-container {
-  border: $debug;
   display: flex;
   flex-direction: column;
-  margin: 5rem 2rem 0 2rem;
+  margin: 0rem 2rem 0 2rem;
 }
 
 .TaskboardList-title {
-  font-size: 5rem;
-  margin: 2rem 0;
+  display: flex;
+  font-size: 3rem;
+  margin: 5rem 0 3rem;
+  align-items: center;
 }
 
+.TackyboardList-add-btn {
+  cursor: pointer;
+  margin: 0 3rem;
+  color: rgb(91, 172, 248);
+}
+
+
 .TaskboardList-list-container {
-  border: $debug;
-  background-color: aquamarine;
+  background-color: rgb(113, 114, 114);
+  border-radius: 5px;
+  padding: 1rem 0.5rem;
 }
