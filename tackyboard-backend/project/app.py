@@ -31,7 +31,11 @@ connect_db(app)
 def token_required(f):
     @wraps(f)
     def _verify(*args, **kwargs):
-        token = request.json.get("_token", None)
+        if request.method == 'GET':
+            token = request.args.get("_token", None)
+        else:
+            token = request.json.get("_token", None)
+        
 
         invalid_msg = {
             "message": "Invalid token. Registration and / or authentication required",
@@ -129,7 +133,6 @@ def get_tackyboards(user):
 def add_tackyboard(user):
     """Create a new tackyboard for a user, expects `user_id` and `name` (of tackyboard)"""
     try:
-        what = "fk"
         user_id = user.user_id
         name = request.json["name"]
 
