@@ -130,8 +130,10 @@ class Tackyboard(db.Model):
     def deleteTackyboard(cls, tackyboard_id):
         """Deletes a tackyboard by tackyboard_id."""
 
-        cls.query.filter_by(tackyboard_id=tackyboard_id).first().delete()
+        record = cls.query.filter_by(tackyboard_id=tackyboard_id).first()
+        db.session.delete(record)
         db.session.commit()
+        
         return { "message": f"Successfully deleted Tackyboard #{tackyboard_id}!" }
 
 #TODO: Also add tests.

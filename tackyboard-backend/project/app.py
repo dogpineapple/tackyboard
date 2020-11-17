@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, redirect, session, jsonify
+from flask import Flask, request, redirect, session, jsonify, make_response
 from flask_login import (
     LoginManager,
     current_user,
@@ -13,9 +13,10 @@ from functools import wraps
 import jwt
 
 CURR_USER_KEY = "curr_user"
+DOMAIN="localhost:3000"
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, supports_credentials=True, origins="http://localhost:3000")
 
 app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get(
     "DATABASE_URL", "postgresql:///tackyboard"
@@ -31,11 +32,7 @@ connect_db(app)
 def token_required(f):
     @wraps(f)
     def _verify(*args, **kwargs):
-        if request.method == 'GET':
-            token = request.args.get("_token", None)
-        else:
-            token = request.json.get("_token", None)
-        
+        token = request.cookies.get("token")
 
         invalid_msg = {
             "message": "Invalid token. Registration and / or authentication required",
@@ -82,7 +79,9 @@ def register():
             app.config["SECRET_KEY"],
             algorithm="HS256",
         )
-        return ({"_token": encoded_jwt.decode("utf-8") , "user": resp.serialize()}, 201)
+        res = make_response(User.serialize())
+        res.set_cookie("token", value=encoded_jwt.decode("utf-8"), httponly=True, domain=DOMAIN)
+        return (res, 201)
 
     return (resp, 400)
 
@@ -100,7 +99,9 @@ def login():
             app.config["SECRET_KEY"],
             algorithm="HS256",
         )
-        return ({"_token": encoded_jwt.decode("utf-8")}, 200)
+        res = make_response(resp.serialize())
+        res.set_cookie("token", encoded_jwt.decode("utf-8"), httponly=True, domain=DOMAIN)
+        return res
 
     return ({"error": "E-mail and password did not match."}, 400)
 
@@ -111,6 +112,13 @@ def login():
 def userUpdate(user_id):
     """Update an existing, logged-in user."""
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    """Logout a user."""
+    res = make_response()
+    print(request.cookies.get('token'))
+    res.delete_cookie('token')
+    return res
 
 ####################
 # TACKYBOARD ROUTES #
@@ -160,8 +168,9 @@ def delete_tackyboard(user, tackyboard_id):
     Deletes a tackyboard by tackyboard_id.
     Returns { "message": "Deleted Tackyboard #[n]" }
     """
-
+    print("yeeet")
     message = Tackyboard.deleteTackyboard(tackyboard_id)
+    
     return (message, 200)
 
 
