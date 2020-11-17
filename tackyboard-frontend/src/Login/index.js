@@ -13,10 +13,6 @@ function Login({ setLoggedIn }) {
     localStorage.clear();
     let resp = await axios.post(loginUrl, data, {withCredentials: true});
     if (resp.status === 200) {
-      // let token = resp.data["_token"];
-      // let tokenParts = token.split(".");
-      // let userInfo = JSON.parse(atob(tokenParts[1]));
-      
       let userData = resp.data;
       localStorage.setItem("email", userData.email);
       localStorage.setItem("user_id", userData.user_id);
