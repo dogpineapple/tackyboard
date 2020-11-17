@@ -6,20 +6,21 @@ import { useHistory } from 'react-router-dom';
 
 const loginUrl = "http://localhost:5000/login";
 
-function Login({ setLoggedIn }) {
+function Login({setLoggedIn}) {
   const history = useHistory();
 
   const handleLogin = async (data) => {
     localStorage.clear();
-    let resp = await axios.post(loginUrl, data, {withCredentials: true});
-    if (resp.status === 200) {
-      // let token = resp.data["_token"];
-      // let tokenParts = token.split(".");
-      // let userInfo = JSON.parse(atob(tokenParts[1]));
-      
-      let userData = resp.data;
-      localStorage.setItem("email", userData.email);
-      localStorage.setItem("user_id", userData.user_id);
+    let resp = await axios.post(loginUrl, data);
+    console.log(resp.data);
+    if (resp.data["_token"]) {
+
+      let token = resp.data["_token"];
+      let tokenParts = token.split(".");
+      let userInfo = JSON.parse(atob(tokenParts[1]));
+      localStorage.setItem("user_id", userInfo.user_id);
+      localStorage.setItem("user_email", userInfo.email);
+      localStorage.setItem("_token", resp.data["_token"]);
 
       setLoggedIn(true);
       history.push("/tackyboards");
@@ -36,7 +37,7 @@ function Login({ setLoggedIn }) {
         <div className="Login-circle2 floating"></div>
         <div className="Login-circle3 floating-reverse"></div>
       </div>
-      <LoginForm handleLogin={handleLogin} />
+      <LoginForm handleLogin={handleLogin}/>
     </div>
   )
 }

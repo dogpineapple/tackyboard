@@ -14,5 +14,4 @@
 .NavBar-item > a, span,
 .NavBar-item > a:visited {
   color: black;
-  cursor: pointer;
 }

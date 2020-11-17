@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import "./NavBar.css";
@@ -7,15 +6,11 @@ function NavBar({ isLoggedIn, setLoggedIn }) {
   const history = useHistory();
 
   // handleLogout is placed here because `useHistory` can only be used within `BrowserRouter`
-  const handleLogout = async () => {
-    
-    const resp = await axios.get("http://localhost:5000/logout", {withCredentials: true});
-    if (resp.status === 200) {
-      setLoggedIn(false);
-      localStorage.clear();
-      // dispatch set redux state to INITIAL
-      history.push("/");
-    }
+  const handleLogout = () => {
+    setLoggedIn(false);
+    localStorage.clear();
+    // dispatch set redux state to INITIAL
+    history.push("/");
   }
 
   return (
