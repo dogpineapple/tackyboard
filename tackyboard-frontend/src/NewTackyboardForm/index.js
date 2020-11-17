@@ -18,9 +18,9 @@ function NewTackyboardForm({ setShowForm, setTaskboards }) {
 
   const handleSubmit = async (evt) => {
     evt.preventDefault();
-    const resp = await axios.post(addTackyboardUrl, formData);
+    const resp = await axios.post(addTackyboardUrl, formData, { withCredentials: true });
     setShowForm(false);
-    setTaskboards(currData => [...currData, resp.data.tackyboard]);
+    setTaskboards(currData => [ resp.data.tackyboard, ...currData]);
   }
 
   //LOW PRIORITY TODO: consider making a character count in the form inputs.

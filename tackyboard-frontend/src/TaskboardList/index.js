@@ -6,26 +6,49 @@ import './TaskboardList.scss';
 import NewTackyboardForm from '../NewTackyboardForm';
 import axios from 'axios';
 
-const getTackyboardsUrl = `http://localhost:5000/tackyboards?_token=${localStorage.getItem("_token")}`;
+const BASE_URL = 'http://localhost:5000';
 
 function TaskboardList() {
   const [showForm, setShowForm] = useState(false);
+  const [errors, setErrors] = useState([]);
   const [taskboards, setTaskboards] = useState([]);
 
   useEffect(function getTaskboards() {
     async function handleGetTaskboards() {
-      const resp = await axios.get(getTackyboardsUrl);
-      console.log("resp...", resp.data);
-      let respBoards = resp.data;
-      setTaskboards(respBoards.tackyboards);
+
+      const resp = await axios.get(`${BASE_URL}/tackyboards`, { withCredentials: true });
+      if (resp.status === 200) {
+        let respBoards = resp.data;
+        let tackyboards = respBoards.tackyboards;
+
+        tackyboards.sort(function(a, b){
+          // Turn your strings into dates, and then subtract them
+          // to get a value that is either negative, positive, or zero.
+          return new Date(b.last_updated) - new Date(a.last_updated);
+        });
+
+        setTaskboards(tackyboards);
+      } else {
+        setErrors(["Error occurred, please try again later"]);
+      }
     }
     handleGetTaskboards();
   }, []);
 
-  console.log("taskboards...", taskboards);
+  const handleDelete = async (id) => {
+    const resp = await axios.delete(`${BASE_URL}/tackyboards/${id}`, { withCredentials: true });
+    if (resp.status === 200) {
+      setTaskboards(currBoards => currBoards.filter(board => board.tackyboard_id !== id));
+    } else {
+      setErrors(["Error occurred, please try again later"]);
+    }
+  }
 
   return (
     <div className="TaskboardList">
+      { errors.length > 0 && errors.map(err => {
+        return <div key={err} className="error">{err}</div>
+      })}
       <div className="TaskboardList-container">
         <div className="TaskboardList-title">
           <h1 className="title">My Tackyboards</h1>
@@ -38,7 +61,8 @@ function TaskboardList() {
           <ul>
             {taskboards.map(board => {
               let date = new Date(board.last_updated);
-              return <TaskboardListCard key={board.last_updated} name={board.name} lastUpdated={date.toLocaleString()} />})
+              return <TaskboardListCard key={board.tackyboard_id} id={board.tackyboard_id} name={board.name} lastUpdated={date.toLocaleString()} handleDelete={handleDelete} />
+            })
             }
           </ul>
         </div>

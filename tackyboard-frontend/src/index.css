@@ -35,6 +35,10 @@ body {
   overflow: scroll;
 }
 
+path {
+  cursor: pointer;
+}
+
 /* tooltip code from W3Schools */
 .tooltip {
   position: relative;

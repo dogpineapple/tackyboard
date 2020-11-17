@@ -4,7 +4,7 @@ import Routes from './Routes';
 import NavBar from './NavBar';
 
 function App() {
-  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem("_token") ? true : false);
+  const [isLoggedIn, setLoggedIn] = useState(localStorage.getItem("user_id") ? true : false);
 
   console.log("isloggedin...", isLoggedIn);
 

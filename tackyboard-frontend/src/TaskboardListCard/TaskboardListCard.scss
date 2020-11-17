@@ -5,5 +5,32 @@
   margin: 0.5rem 1rem;
   padding: 1rem 1.5rem;
   font-size: 1.4rem;
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.TaskboardListCard-confirm-delete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.TaskboardListCard-confirm-delete button {
+  @include button-style;
+  margin: 0 3px;
+  width: 45px;
+  color: white;
+  padding: 0.3rem;
+  margin-top: 2px;
+}
+
+.TaskboardListCard-yes {
+  background-color: rgb(127, 212, 0);
+}
+
+.TaskboardListCard-no {
+  background-color: lightcoral;
 }
 
