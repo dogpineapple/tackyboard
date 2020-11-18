@@ -36,7 +36,6 @@ function Taskboard() {
     const res = await Axios.get(`${BASE_URL}/tackyboard/${boardId}/tasks/${taskId}`, { withCredentials: true });
     if (res.status === 200) {
       setTaskDetail(res.data);
-      console.log(res.data)
     }
   }
 
@@ -53,7 +52,7 @@ function Taskboard() {
         <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} />
       </section>
       <section className="Taskboard-window2">
-        {taskDetail && <TaskDetail taskDetail={taskDetail} />}
+        {taskDetail && <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail}/>}
       </section>
       <section className="Taskboard-window3">
         <ClickToCopyList />

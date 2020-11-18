@@ -13,15 +13,12 @@ import NewTaskForm from '../NewTaskForm';
  */
 function TaskList({ tasks, getTaskDetail, addTask}) {
   const [showForm, setShowForm] = useState(false);
-  // for each task in tasks... (use `.map`)
-  // create a TaskListCard 
 
   //displays new task card form
   const handleShowForm = (evt) => {
     setShowForm(!showForm);
   }
   
-
   return (
     <div className="TaskList" >
       <div className="TaskList-new-task-button tooltip">
