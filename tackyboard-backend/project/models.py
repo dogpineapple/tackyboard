@@ -179,7 +179,7 @@ class Task(db.Model):
         }
 
     @classmethod
-    def add(cls, task_title, task_description, tackyboard_id, deadline=None):
+    def add(cls, task_title, task_description, status_id, tackyboard_id, deadline=None):
         """
         Creates a Task instance and inserts into the database.
         Returns a task instance.
@@ -188,13 +188,14 @@ class Task(db.Model):
         new_task = Task(
             task_title=task_title,
             task_description=task_description,
+            status_id=status_id,
             tackyboard_id=tackyboard_id,
             deadline=deadline,
         )
 
         try:
             db.session.add(new_task)
-            db.session.flush()  # use flush() to access the unique primary key `task_id`
+            db.session.commit()  # use flush() to access the unique primary key `task_id`
         except Exception as e:
             return {"error": {"Database add error": e}}
 
