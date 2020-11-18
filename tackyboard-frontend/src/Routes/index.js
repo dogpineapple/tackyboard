@@ -10,7 +10,7 @@ import TaskboardList from '../TaskboardList';
 function Routes({setLoggedIn}) {
   return (
     <Switch>
-      <Route path="/tackyboards/:boardid">
+      <Route path="/tackyboards/:boardId">
         <Taskboard />
       </Route>
       <Route path="/tackyboards">

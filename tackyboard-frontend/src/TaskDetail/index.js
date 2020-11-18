@@ -8,10 +8,17 @@ import { faStickyNote, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons
  * 
  * Props: task (object: { title, description, status, tackycards })
  */
-function TaskDetail({ task }) {
+function TaskDetail({ taskDetail }) {
+  const statuses = {
+    0: "PLANNED",
+    1: "IN PROGRESS",
+    2: "DONE",
+    3: "DROPPED",
+    4: "PENDING",
+  }
   return (
     <div className="TaskDetail">
-      <h1 className="TaskDetail-title">{task.title}</h1>
+      <h1 className="TaskDetail-title">{taskDetail.task.task_title}</h1>
       <div className="TaskDetail-icon-btn tooltip" >
         <FontAwesomeIcon  icon={faTrash} size="3x"/>
         <span className="tooltiptext">Remove task</span>  
@@ -25,14 +32,14 @@ function TaskDetail({ task }) {
         <span className="tooltiptext">New tackynote</span>  
       </div>
       <p className="TaskDetail-description">
-        {task.description}
+        {taskDetail.task.task_description}
         <span className="TaskDetail-status tooltip">
-          {task.status.toUpperCase()}
+          {statuses[taskDetail.task.status_id]}
           <span className="TaskListCard-tooltiptext tooltiptext">Change</span>
         </span>
       </p>
       {
-        task.tackycards?.length > 0 && task.tackycards?.map(card => (
+        taskDetail.tackynotes?.length > 0 && taskDetail.tackynotes?.map(card => (
           <TackyCard key={card.id} title={card.title} body={card.body} />
         ))
       }

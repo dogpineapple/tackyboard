@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './TaskList.css';
 import TaskListCard from '../TaskListCard';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,7 +11,7 @@ import NewTaskForm from '../NewTaskForm';
  * TaskList renders `TaskListCard`(s) on 
  *    the left-most window of the `Taskboard` component. 
  */
-function TaskList(tasks) {
+function TaskList({ tasks, getTaskDetail, addTask}) {
   const [showForm, setShowForm] = useState(false);
   // for each task in tasks... (use `.map`)
   // create a TaskListCard 
@@ -20,6 +20,7 @@ function TaskList(tasks) {
   const handleShowForm = (evt) => {
     setShowForm(!showForm);
   }
+  
 
   return (
     <div className="TaskList" >
@@ -27,8 +28,14 @@ function TaskList(tasks) {
         <FontAwesomeIcon icon={faPlusCircle} size="3x" onClick={handleShowForm} ></FontAwesomeIcon>
         <span className="tooltiptext">New task</span>
       </div>
-      {showForm && <NewTaskForm />}
-      <TaskListCard id="1" title="Develop Tackyboard" description="Finish the code!" status="In progress" />
+      {showForm && <NewTaskForm addTask={addTask} />}
+      {tasks.length > 0 ?
+        tasks.map(task => {
+          return <TaskListCard key={task.task_id} id={task.task_id} title={task.task_title} description={task.task_description} status={task.status_id} lastUpdated={task.last_status_update} getTaskDetail={getTaskDetail}/>
+        })
+        :
+        <div>No tasks available.</div>
+      }
     </div>
   );
 }
