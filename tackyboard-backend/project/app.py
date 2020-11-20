@@ -13,7 +13,7 @@ from functools import wraps
 import jwt
 
 CURR_USER_KEY = "curr_user"
-DOMAIN = "localhost:3000"
+# DOMAIN = "localhost"
 
 app = Flask(__name__)
 CORS(app, supports_credentials=True, origins="http://localhost:3000")
@@ -81,7 +81,7 @@ def register():
         )
         res = make_response(User.serialize())
         res.set_cookie(
-            "token", value=encoded_jwt.decode("utf-8"), httponly=True, domain=DOMAIN
+            "token", value=encoded_jwt.decode("utf-8")
         )
         return (res, 201)
 
@@ -103,7 +103,7 @@ def login():
         )
         res = make_response(resp.serialize())
         res.set_cookie(
-            "token", encoded_jwt.decode("utf-8"), httponly=True, domain=DOMAIN
+            "token", encoded_jwt.decode("utf-8")
         )
         return res
 
