@@ -10,7 +10,7 @@ function TaskboardListCard({ id, name, lastUpdated, handleDelete }) {
   return (
     <div className="TaskboardListCard">
       <section >
-        <a href={`/tackyboards/${id}`}><h1>{name}</h1></a>
+        <a href={`/tackyboards/${name}/${id}`}><h1>{name}</h1></a>
         <div>Last updated {moment(lastUpdated).fromNow()} on {moment(lastUpdated).format('lll')}.</div>
       </section>
       <section>

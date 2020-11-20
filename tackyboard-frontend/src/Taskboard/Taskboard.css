@@ -4,10 +4,16 @@
   height: 100vh;
 }
 
+.Taskboard-header {
+  padding: 1.5rem 0 0 2.5rem;
+  color: rgb(247, 247, 247);
+  font-size: 1.6rem;
+}
+
 .Taskboard-window1 {
   position: absolute;
   border-right: rgb(65, 65, 65) 1px solid;
-  top: 6%;
+  top: 8%;
   left: 0;
   width: 25%;
   height: 100%;
@@ -15,7 +21,7 @@
 
 .Taskboard-window2 {
   position: absolute;
-  top: 6%;
+  top: 8%;
   left: 25%;
   border-right: rgb(65, 65, 65) 1px solid;
   width: 60%;
@@ -24,7 +30,7 @@
 
 .Taskboard-window3 {
   position: absolute;
-  top: 6%;
+  top: 8%;
   left: 85%;
   width: 15%;
   height: 100%;

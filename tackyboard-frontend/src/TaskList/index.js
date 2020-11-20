@@ -28,10 +28,10 @@ function TaskList({ tasks, getTaskDetail, addTask}) {
       {showForm && <NewTaskForm addTask={addTask} />}
       {tasks.length > 0 ?
         tasks.map(task => {
-          return <TaskListCard key={task.task_id} id={task.task_id} title={task.task_title} description={task.task_description} status={task.status_id} lastUpdated={task.last_status_update} getTaskDetail={getTaskDetail}/>
+          return <TaskListCard key={task.task_id} task={task} getTaskDetail={getTaskDetail}/>
         })
         :
-        <div>No tasks available.</div>
+        <div className="TaskList-none">No tasks available.</div>
       }
     </div>
   );

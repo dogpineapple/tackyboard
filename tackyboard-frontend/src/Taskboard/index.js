@@ -19,9 +19,9 @@ function Taskboard() {
   // tasks -> put it in the store { tasks: [{task}, {task}, {task}] }
   // user clicks on a task in the tasklist 
   // -> triggers code to the "GET" route for the selected task's TackyCards with the task's id
-  const [taskDetail, setTaskDetail] = useState()
+  const [taskDetail, setTaskDetail] = useState();
   const [tasks, setTasks] = useState([]);
-  const { boardId } = useParams();
+  const { boardId, boardName } = useParams();
 
 
   useEffect(function handleGetTasks() {
@@ -48,11 +48,14 @@ function Taskboard() {
 
   return (
     <div className="Taskboard">
+      <header className="Taskboard-header">
+        <h1>{boardName}</h1>
+      </header>
       <section className="Taskboard-window1">
         <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} />
       </section>
       <section className="Taskboard-window2">
-        {taskDetail && <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail}/>}
+        {taskDetail && <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} />}
       </section>
       <section className="Taskboard-window3">
         <ClickToCopyList />
