@@ -1,6 +1,7 @@
 import Axios from "axios";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
+import "./NewTackynoteForm.scss";
 
 const BASE_URL = "http://localhost:5000";
 /**
@@ -26,11 +27,14 @@ function NewTackynoteForm({ setShowForm, updateTaskDetail, taskId }) {
 
   //LOW PRIORITY TODO: consider making a character count in the form inputs.
   return (
+    <div className="NewTackynoteForm-container">
     <form className="NewTackynoteForm" onSubmit={handleSubmit}>
-      <input maxLength="50" placeholder="Note title" name="note_title" value={formData.note_title} onChange={handleChange} />
-      <input maxLength="500" placeholder="Note" name="note" value={formData.note} onChange={handleChange} />
+      <h3>Add Tackynote</h3>
+      <input required maxLength="50" placeholder="Note title" name="note_title" value={formData.note_title} onChange={handleChange} />
+      <textarea maxLength="500" placeholder="Note" name="note" value={formData.note} onChange={handleChange} />
       <button type="submit">Note it!</button>
     </form>
+    </div>
   );
 }
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { statuses } from '../helpers';
 import './TaskListCard.scss';
 
 
@@ -10,13 +11,6 @@ import './TaskListCard.scss';
  */
 function TaskListCard({ task, getTaskDetail }) {
   console.log(task);
-  const statuses = {
-    0: "PLANNED",
-    1: "IN PROGRESS",
-    2: "DONE",
-    3: "DROPPED",
-    4: "PENDING",
-  }
 
   const handleClick = () => {
     getTaskDetail(task.task_id)
@@ -30,7 +24,7 @@ function TaskListCard({ task, getTaskDetail }) {
         <p className="TaskListCard-deadline">Due {moment(task.deadline).format("ddd, MM[/]D[/]YYYY")}</p>
         <p>Updated {moment(task.last_status_update).fromNow()}</p>
       </div>
-      <p className="TaskListCard-status tooltip">{statuses[task.status_id]}<span className="TaskListCard-tooltiptext tooltiptext">Change</span></p>
+      <p className="TaskListCard-status tooltip" style={{ backgroundColor: statuses[task.status_id].color }}>{statuses[task.status_id].status}<span className="TaskListCard-tooltiptext tooltiptext">Change</span></p>
     </div>
   )
 }

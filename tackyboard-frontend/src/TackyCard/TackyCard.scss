@@ -6,6 +6,7 @@
   width: fit-content;
   max-width: 45%;
   @include card-display;
+  margin: 0.5rem;
 }
 
 .TackyCard-title {

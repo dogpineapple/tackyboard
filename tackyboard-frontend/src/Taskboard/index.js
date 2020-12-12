@@ -46,6 +46,28 @@ function Taskboard() {
     }
   }
 
+  // deletes a task
+  const deleteTask = async (taskId) => {
+    const res = await Axios.delete(`${BASE_URL}/tackyboard/${boardId}/tasks/${taskId}`, { withCredentials: true })
+    if (res.status === 200) {
+      let filteredTasks = tasks.filter(task => {
+        return task.task_id !== taskId;
+      });
+      setTasks(filteredTasks);
+      setTaskDetail();
+    }
+  }
+
+  const editTask = async (taskId, data) => {
+    const res = await Axios.patch(`${BASE_URL}/tackyboard/${boardId}/tasks/${taskId}`, data, { withCredentials: true })
+    if (res.status === 200) {
+      let filteredTasks = tasks.filter(task => {
+        return task.task_id !== taskId;
+      });
+      setTasks([ ...filteredTasks, res.data.task]);
+    }
+  }
+
   return (
     <div className="Taskboard">
       <header className="Taskboard-header">
@@ -55,7 +77,8 @@ function Taskboard() {
         <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} />
       </section>
       <section className="Taskboard-window2">
-        {taskDetail && <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} />}
+        {taskDetail ? <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} deleteTask={deleteTask} editTask={editTask}/> 
+          : <div className="Taskboard-no-task-detail">Click on a task to view details.</div>}
       </section>
       <section className="Taskboard-window3">
         <ClickToCopyList />

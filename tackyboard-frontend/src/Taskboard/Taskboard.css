@@ -10,6 +10,13 @@
   font-size: 1.6rem;
 }
 
+.Taskboard-no-task-detail {
+  text-align: center;
+  color: rgb(168, 168, 168);
+  font-size: 1.3rem;
+  margin-top: 5rem;
+}
+
 .Taskboard-window1 {
   position: absolute;
   border-right: rgb(65, 65, 65) 1px solid;
