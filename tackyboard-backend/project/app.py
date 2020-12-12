@@ -253,7 +253,8 @@ def add_task(user, tackyboard_id):
 
 
 @app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>", methods=["DELETE"])
-def delete_task(tackyboard_id, task_id):
+@token_required
+def delete_task(user, tackyboard_id, task_id):
     """
     Removes a job post by task id.
     Returns a json message confirmation of deletion success.
@@ -263,6 +264,18 @@ def delete_task(tackyboard_id, task_id):
     db.session.commit()
 
     return ({"message": f"Task #{task_id} has been deleted"}, 200)
+
+@app.route("/tackyboard/<tackyboard_id>/tasks/<task_id>", methods=["PATCH"])
+# @token_required
+def patch_task(tackyboard_id, task_id):
+    
+    task = Task.query.filter_by(task_id=task_id).first()
+    for key in request.json:
+        setattr(task, key, request.json[key])
+    
+    db.session.commit()
+    
+    return ({"message": "Update success", "task": task.serialize()}, 200)
 
 
 #####################
