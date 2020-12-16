@@ -1,19 +1,28 @@
-import React, { useState } from "react";
-import "./TaskDetail.css";
+import React, { useEffect, useState } from "react";
+import "./TaskDetail.scss";
 import TackyCard from "../TackyCard";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStickyNote, faTrash } from "@fortawesome/free-solid-svg-icons";
 import NewTackynoteForm from "../NewTackynoteForm";
 import { statuses } from "../helpers";
+import moment from "moment";
 
 /**
  * 
  * Props: task (object: { title, description, status, tackycards })
  */
-function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
+function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask, deleteTackynote }) {
+  const INITIAL_DATA = { task_title: taskDetail.task.task_title, task_description: taskDetail.task.task_description }
   const [showForm, setShowForm] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const [editData, setEditData] = useState({ task_title: taskDetail.task.task_title, task_description: taskDetail.task.task_description })
+  const [editData, setEditData] = useState(INITIAL_DATA)
+
+  useEffect(() => {
+    if (showEdit) {
+      setEditData(INITIAL_DATA);
+      setShowEdit(false);
+    }
+  }, [taskDetail]);
 
   const updateTaskDetail = (newNote) => {
     setTaskDetail(currData => ({ ...currData, tackynotes: [newNote.tackynote, ...currData.tackynotes] }));
@@ -27,8 +36,9 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
   const handleEditSubmit = (evt) => {
     evt.preventDefault();
     if (editData.task_title !== taskDetail.task.task_title
-          && editData.task_description !== taskDetail.task.task_description) {
+      || editData.task_description !== taskDetail.task.task_description) {
       editTask(taskDetail.task.task_id, editData);
+      setEditData(INITIAL_DATA);
     }
     setShowEdit(false);
   }
@@ -41,6 +51,10 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
     deleteTask(taskDetail.task.task_id);
   }
 
+  const handleDeleteTackynote = (noteId) => {
+    deleteTackynote(taskDetail.task.task_id, noteId);
+  }
+
   return (
     <div className="TaskDetail">
       {showForm && <NewTackynoteForm setShowForm={setShowForm} updateTaskDetail={updateTaskDetail} taskId={taskDetail.task.task_id} />}
@@ -48,6 +62,7 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
         {showEdit ?
           <form onSubmit={handleEditSubmit}>
             <input value={editData.task_title} name="task_title" onChange={handleChange}></input>
+            <button type="submit">Update</button>
           </form>
           : taskDetail.task.task_title}</h1>
       <aside>
@@ -60,7 +75,7 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
           <span className="tooltiptext">New tackynote</span>
         </div>
       </aside>
-      <p className="TaskDetail-description">
+      <section className="TaskDetail-description" onClick={() => setShowEdit(true)}>
         {showEdit ?
           <form onSubmit={handleEditSubmit}>
             <input value={editData.task_description} name="task_description" onChange={handleChange}></input>
@@ -70,12 +85,18 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask }) {
           {statuses[taskDetail.task.status_id].status}
           <span className="TaskListCard-tooltiptext tooltiptext">Change</span>
         </span>
-      </p>
-      {
-        taskDetail.tackynotes?.length > 0 && taskDetail.tackynotes?.map(card => (
-          <TackyCard key={card.tackynote_id} title={card.note_title} body={card.note} />
-        ))
-      }
+      </section>
+      <section className="TaskDetail-dates">
+        <p>Deadline {moment(taskDetail.task.deadline).fromNow()}</p>
+        <p>Last updated {moment(taskDetail.task.last_status_update).fromNow()}</p>
+      </section>
+      <section className="TaskDetail-note-container">
+        {
+          taskDetail.tackynotes?.length > 0 && taskDetail.tackynotes?.map(card => (
+            <TackyCard key={card.tackynote_id} noteId={card.tackynote_id} title={card.note_title} body={card.note} handleDeleteTackynote={handleDeleteTackynote}/>
+          ))
+        }
+      </section>
     </div>
   );
 }

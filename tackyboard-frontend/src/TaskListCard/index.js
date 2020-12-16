@@ -10,7 +10,6 @@ import './TaskListCard.scss';
  * Renders a card for a task.
  */
 function TaskListCard({ task, getTaskDetail }) {
-  console.log(task);
 
   const handleClick = () => {
     getTaskDetail(task.task_id)

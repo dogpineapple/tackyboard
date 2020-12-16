@@ -2,11 +2,22 @@
 
 .TackyCard {
   color: black;
-  padding: 1.8rem;
+  padding: 2rem;
   width: fit-content;
   max-width: 45%;
   @include card-display;
   margin: 0.5rem;
+  position: relative;
+}
+
+.Tackycard-delete-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.8rem;
+}
+
+.Tackycard-delete-btn > svg {
+  color: rgb(151, 151, 151);
 }
 
 .TackyCard-title {

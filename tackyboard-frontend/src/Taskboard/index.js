@@ -61,10 +61,27 @@ function Taskboard() {
   const editTask = async (taskId, data) => {
     const res = await Axios.patch(`${BASE_URL}/tackyboard/${boardId}/tasks/${taskId}`, data, { withCredentials: true })
     if (res.status === 200) {
-      let filteredTasks = tasks.filter(task => {
-        return task.task_id !== taskId;
+      // update the `tasks` state by changing the name/description of the task that was
+      // just editted without changing the order of the tasks in the `tasks` state.
+      let updatedTasks = tasks.map(task => {
+        if (task.task_id === taskId) {
+          return res.data.task;
+        } else {
+          return task;
+        }
       });
-      setTasks([ ...filteredTasks, res.data.task]);
+      setTasks(updatedTasks);
+    }
+  }
+
+  const deleteTackynote = async (taskId, noteId) => {
+    const res = await Axios.delete(`${BASE_URL}/tackyboard/${boardId}/tasks/${taskId}/tackynotes/${noteId}`, { withCredentials: true });
+    if (res.status === 200) {
+      // deletion successful
+      let filteredNotes = taskDetail.tackynotes.filter(note => note.tackynote_id !== noteId);
+      setTaskDetail(currDetail => ({...currDetail, tackynotes: filteredNotes}));
+    } else {
+      console.log(`an error occurred: ${res}`);
     }
   }
 
@@ -73,16 +90,18 @@ function Taskboard() {
       <header className="Taskboard-header">
         <h1>{boardName}</h1>
       </header>
+      <div className="Taskboard-window-cont">
       <section className="Taskboard-window1">
         <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} />
       </section>
       <section className="Taskboard-window2">
-        {taskDetail ? <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} deleteTask={deleteTask} editTask={editTask}/> 
+        {taskDetail ? <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} deleteTask={deleteTask} editTask={editTask} deleteTackynote={deleteTackynote}/> 
           : <div className="Taskboard-no-task-detail">Click on a task to view details.</div>}
       </section>
       <section className="Taskboard-window3">
         <ClickToCopyList />
       </section>
+      </div>
     </div>
   )
 }

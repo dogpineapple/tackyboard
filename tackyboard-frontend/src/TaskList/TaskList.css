@@ -8,6 +8,8 @@
 .TaskList {
   display: flex;
   flex-direction: column;
+  overflow: scroll;
+  height: 95%;
 }
 
 .TaskList-none {
