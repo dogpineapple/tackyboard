@@ -251,8 +251,10 @@ class Tackynote(db.Model):
     def deleteTackyNote(cls, tackynote_id):
         """Deletes a tackynote by tackynote_id."""
 
-        cls.query.filter_by(tackynote_id=tackynote_id).first().delete()
+        tackynote = cls.query.filter_by(tackynote_id=tackynote_id).first()
+        db.session.delete(tackynote)
         db.session.commit()
+        
         return { "message": f"Successfully deleted Tackynote #{tackynote_id}!" }
 
 
