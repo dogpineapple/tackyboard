@@ -18,8 +18,8 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask, deleteTac
   const [editData, setEditData] = useState(INITIAL_DATA)
 
   useEffect(() => {
+    setEditData(INITIAL_DATA);
     if (showEdit) {
-      setEditData(INITIAL_DATA);
       setShowEdit(false);
     }
   }, [taskDetail]);
@@ -87,7 +87,7 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask, deleteTac
         </span>
       </section>
       <section className="TaskDetail-dates">
-        <p>Deadline {moment(taskDetail.task.deadline).fromNow()}</p>
+        <p>Deadline {moment(taskDetail.task.deadline).utc().fromNow()}</p>
         <p>Last updated {moment(taskDetail.task.last_status_update).fromNow()}</p>
       </section>
       <section className="TaskDetail-note-container">

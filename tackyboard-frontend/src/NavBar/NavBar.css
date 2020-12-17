@@ -4,7 +4,10 @@
   display: flex;
   flex-direction: row;
   right: 0rem;
+  background-color: rgb(255, 255, 255);
+  border-bottom-left-radius: 10px;
 }
+
 
 .NavBar-item {
   padding: 1rem 3rem;
