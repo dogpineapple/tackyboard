@@ -18,3 +18,11 @@
   letter-spacing: 0.5px;
   border-radius: 10px;
 }
+
+@mixin error-notice {
+  padding: 1rem;
+  border-radius: 5px;
+  letter-spacing: 1px;
+  color: white;
+  background-color: rgb(255, 134, 134);
+}

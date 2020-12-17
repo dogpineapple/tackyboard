@@ -1,5 +1,23 @@
+@import '../mixins';
+
 .Login {
-  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.Login-form-container {
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-left: 1px solid rgb(207, 207, 207);
+  background: white;
+  height: 100%;
+  padding: 15rem 10rem 0rem 10rem;
+}
+
+.Login-error {
+  @include error-notice;
+  margin-bottom: 1rem;
 }
 
 .Login-bg {
@@ -16,7 +34,6 @@
   border-radius: 100%;
   z-index: -1;
   background-color: rgb(247, 255, 175);
-
 }
 
 .Login-circle {

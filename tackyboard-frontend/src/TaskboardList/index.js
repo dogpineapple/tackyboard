@@ -60,8 +60,7 @@ function TaskboardList() {
         <div className="TaskboardList-list-container">
           <ul>
             {taskboards.map(board => {
-              let date = new Date(board.last_updated);
-              return <TaskboardListCard key={board.tackyboard_id} id={board.tackyboard_id} name={board.name} lastUpdated={date.toLocaleString()} handleDelete={handleDelete} />
+              return <TaskboardListCard key={board.tackyboard_id} id={board.tackyboard_id} name={board.name} lastUpdated={board.last_updated} handleDelete={handleDelete} />
             })
             }
           </ul>

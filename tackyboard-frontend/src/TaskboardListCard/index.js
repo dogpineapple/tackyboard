@@ -7,11 +7,14 @@ import './TaskboardListCard.scss';
 
 function TaskboardListCard({ id, name, lastUpdated, handleDelete }) {
   const [showConfirm, setShowConfirm] = useState(false);
+
+  let lastUpdatedDateUTC = moment.utc(lastUpdated).toDate();
+  let lastUpdatedDateLocal = moment(lastUpdatedDateUTC).local().fromNow();
   return (
     <div className="TaskboardListCard">
       <section >
         <a href={`/tackyboards/${name}/${id}`}><h1>{name}</h1></a>
-        <div>Last updated {moment(lastUpdated).fromNow()} on {moment(lastUpdated).format('lll')}.</div>
+        <div>Last updated {lastUpdatedDateLocal} on {moment(lastUpdated).format('l')}.</div>
       </section>
       <section>
         {showConfirm ?
