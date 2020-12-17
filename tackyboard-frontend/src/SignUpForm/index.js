@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-// import axios from 'axios';
+import axios from 'axios';
 import './SignUpForm.css';
+import { useHistory } from "react-router-dom";
 
-function SignUpForm() {
+function SignUpForm({ setLoggedIn }) {
   const INITIAL_VALUES = { email: "", password: "", repeatPassword: "", fname: "", lname: "" };
   const [formData, setFormData] = useState(INITIAL_VALUES);
+  const history = useHistory();
 
   const handleChange = (evt) => {
     const { name, value } = evt.target;
@@ -12,8 +14,19 @@ function SignUpForm() {
   };
 
   const handleSubmit = async (evt) => {
+    localStorage.clear();
     evt.preventDefault();
-    // const resp = await axios.post('http://localhost:5000/register', formData);
+    const resp = await axios.post('http://localhost:5000/register', formData, {withCredentials: true});
+    if (resp.status === 201) {
+      let userData = resp.data;
+      localStorage.setItem("email", userData.email);
+      localStorage.setItem("user_id", userData.user_id);
+
+      setLoggedIn(true);
+      history.push("/tackyboards");
+    } else {
+      console.log(resp.data["error"]);
+    }
   }
 
   return (

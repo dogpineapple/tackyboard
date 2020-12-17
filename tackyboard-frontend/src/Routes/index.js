@@ -23,7 +23,7 @@ function Routes({setLoggedIn}) {
         <Login setLoggedIn={setLoggedIn}/>
       </Route>
       <Route path="/signup">
-        <SignUp />
+        <SignUp setLoggedIn={setLoggedIn}/>
       </Route>
       <Route path="/demo">
         <Taskboard />
