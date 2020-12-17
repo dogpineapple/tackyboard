@@ -206,6 +206,7 @@ class Task(db.Model):
         """Retrieves all tasks for a tackyboard(id) and returns an array of tasks."""
 
         tasks = cls.query.filter_by(tackyboard_id=tackyboard_id).all()
+        
         return tasks
 
     @classmethod
@@ -214,7 +215,12 @@ class Task(db.Model):
 
         cls.query.filter_by(task_id=task_id).first().delete()
         db.session.commit()
+        
         return { "message": f"Successfully deleted Task #{task_id}!" }
+    
+    def save(self):
+        self.last_status_update = datetime.utcnow()
+        db.session.commit()
 
 class Tackynote(db.Model):
 
@@ -253,7 +259,6 @@ class Tackynote(db.Model):
 
         tackynote = cls.query.filter_by(tackynote_id=tackynote_id).first()
         db.session.delete(tackynote)
-        db.session.commit()
         
         return { "message": f"Successfully deleted Tackynote #{tackynote_id}!" }
 

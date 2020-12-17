@@ -273,7 +273,7 @@ def patch_task(tackyboard_id, task_id):
     for key in request.json:
         setattr(task, key, request.json[key])
     
-    db.session.commit()
+    task.save()
     
     return ({"message": "Update success", "task": task.serialize()}, 200)
 
@@ -295,9 +295,12 @@ def add_tackynotes(user, tackyboard_id, task_id):
         new_tackynote = Tackynote(
             task_id=task_id, note=note, note_title=tackynote_title
         )
-        print(new_tackynote)
+        
         db.session.add(new_tackynote)
-        db.session.commit()
+        
+        task = Task.query.filter_by(task_id=task_id).first()
+        task.save()
+        
     except Exception as e:
         print(e)
         return (f"error occurred when creating new post note, {e}", 400)
@@ -320,6 +323,10 @@ def delete_tackynote(user, tackyboard_id, task_id, tackynote_id):
     Returns message on successful deletion.
     """
     message = Tackynote.deleteTackyNote(tackynote_id)
+    
+    task = Task.query.filter_by(task_id=task_id).first()
+    task.save()
+    
     return (message, 200)
 
 
