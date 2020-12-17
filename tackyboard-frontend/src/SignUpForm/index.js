@@ -36,7 +36,7 @@ function SignUpForm({ setLoggedIn }) {
       <form onSubmit={handleSubmit}>
         <input name="email" value={formData.email} placeholder="Email" onChange={handleChange} />
         <input name="password" value={formData.password} placeholder="Password" onChange={handleChange} />
-        <input name="repeatPassword" value={formData.repeatPassword} placeholder="Password" onChange={handleChange} />
+        <input name="repeatPassword" value={formData.repeatPassword} placeholder="Repeat password" onChange={handleChange} />
         <input name="fname" value={formData.fname} placeholder="Firstname" onChange={handleChange}></input>
         <input name="lname" value={formData.lname} placeholder="Lastname" onChange={handleChange}></input>
         <button>SIGN UP</button>

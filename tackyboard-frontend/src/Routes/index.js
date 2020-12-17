@@ -25,9 +25,9 @@ function Routes({setLoggedIn}) {
       <Route path="/signup">
         <SignUp setLoggedIn={setLoggedIn}/>
       </Route>
-      <Route path="/demo">
+      {/* <Route path="/demo">
         <Taskboard />
-      </Route>
+      </Route> */}
       <Route>
         <Homepage />
       </Route>

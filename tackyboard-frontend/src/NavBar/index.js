@@ -38,9 +38,9 @@ function NavBar({ isLoggedIn, setLoggedIn }) {
             <li className="NavBar-item">
               <a href="/">TACKYBOARD</a>
             </li>
-            <li className="NavBar-item">
+            {/* <li className="NavBar-item">
               <a href="/demo">DEMO</a>
-            </li>
+            </li> */}
             <li className="NavBar-item">
               <a href="/login">LOGIN</a>
             </li>
