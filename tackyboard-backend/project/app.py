@@ -71,21 +71,22 @@ def token_required(f):
 def register():
     """Register a new user."""
 
-    resp = User.register(**request.json)
+    
+    user = User.register(**request.json)
 
-    if isinstance(resp, User):
+    if isinstance(user, User):
         encoded_jwt = jwt.encode(
-            {"user_id": resp.user_id, "email": resp.email},
+            {"user_id": user.user_id, "email": user.email},
             app.config["SECRET_KEY"],
             algorithm="HS256",
         )
-        res = make_response(User.serialize())
+        res = make_response(user.serialize())
         res.set_cookie(
             "token", value=encoded_jwt.decode("utf-8")
         )
         return (res, 201)
 
-    return (resp, 400)
+    return (user, 400)
 
 
 @app.route("/login", methods=["POST"])

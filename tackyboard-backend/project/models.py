@@ -32,12 +32,12 @@ class User(db.Model):
         }
 
     @classmethod
-    def register(cls, email, password, first_name, last_name):
+    def register(cls, email, password, fname, lname, repeatPassword):
         """ Register a new user """
 
         hashed_pwd = bcrypt.generate_password_hash(password).decode("UTF-8")
 
-        user = User(email=email, password=hashed_pwd, fname=first_name, lname=last_name)
+        user = User(email=email, password=hashed_pwd, fname=fname, lname=lname)
 
         try:
             db.session.add(user)
