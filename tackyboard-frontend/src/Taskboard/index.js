@@ -70,6 +70,7 @@ function Taskboard() {
           return task;
         }
       });
+      setTaskDetail(currTask => ({ ...currTask, task: res.data.task}));
       setTasks(updatedTasks);
     }
   }
@@ -92,7 +93,7 @@ function Taskboard() {
       </header>
       <div className="Taskboard-window-cont">
       <section className="Taskboard-window1">
-        <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} />
+        <TaskList addTask={addTask} tasks={tasks} setTasks={setTasks} getTaskDetail={getTaskDetail} editTask={editTask}/>
       </section>
       <section className="Taskboard-window2">
         {taskDetail ? <TaskDetail taskDetail={taskDetail} setTaskDetail={setTaskDetail} deleteTask={deleteTask} editTask={editTask} deleteTackynote={deleteTackynote}/> 

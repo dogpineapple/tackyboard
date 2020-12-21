@@ -33,6 +33,11 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask, deleteTac
     setEditData(currData => ({ ...currData, [name]: value }));
   }
 
+  const handleStatusUpdate = () => {
+    const nextStatus = (taskDetail.task.status_id + 1) % 5 
+    editTask(taskDetail.task.task_id, { status_id: nextStatus });
+  }
+
   const handleEditSubmit = (evt) => {
     evt.preventDefault();
     if (editData.task_title !== taskDetail.task.task_title
@@ -75,13 +80,15 @@ function TaskDetail({ taskDetail, setTaskDetail, deleteTask, editTask, deleteTac
           <span className="tooltiptext">New tackynote</span>
         </div>
       </aside>
-      <section className="TaskDetail-description" onClick={() => setShowEdit(true)}>
+      <section>
+        <span className="TaskDetail-description" onClick={() => setShowEdit(true)}>
         {showEdit ?
           <form onSubmit={handleEditSubmit}>
             <input value={editData.task_description} name="task_description" onChange={handleChange}></input>
           </form>
           : taskDetail.task.task_description}
-        <span className="TaskDetail-status tooltip" style={{ backgroundColor: statuses[taskDetail.task.status_id].color }}>
+        </span>
+        <span className="TaskDetail-status tooltip" style={{ backgroundColor: statuses[taskDetail.task.status_id].color }} onClick={handleStatusUpdate}>
           {statuses[taskDetail.task.status_id].status}
           <span className="TaskListCard-tooltiptext tooltiptext">Change</span>
         </span>

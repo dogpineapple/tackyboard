@@ -217,10 +217,11 @@ class Task(db.Model):
         db.session.commit()
         
         return { "message": f"Successfully deleted Task #{task_id}!" }
-    
+
     def save(self):
         self.last_status_update = datetime.utcnow()
         db.session.commit()
+        
 
 class Tackynote(db.Model):
 

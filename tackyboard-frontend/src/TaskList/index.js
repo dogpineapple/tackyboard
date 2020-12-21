@@ -11,7 +11,7 @@ import NewTaskForm from '../NewTaskForm';
  * TaskList renders `TaskListCard`(s) on 
  *    the left-most window of the `Taskboard` component. 
  */
-function TaskList({ tasks, getTaskDetail, addTask}) {
+function TaskList({ tasks, getTaskDetail, addTask, editTask}) {
   const [showForm, setShowForm] = useState(false);
 
   //displays new task card form
@@ -28,7 +28,7 @@ function TaskList({ tasks, getTaskDetail, addTask}) {
       {showForm && <NewTaskForm addTask={addTask} />}
       {tasks.length > 0 ?
         tasks.map(task => {
-          return <TaskListCard key={task.task_id} task={task} getTaskDetail={getTaskDetail}/>
+          return <TaskListCard key={task.task_id} task={task} getTaskDetail={getTaskDetail} editTask={editTask}/>
         })
         :
         <div className="TaskList-none">No tasks available.</div>

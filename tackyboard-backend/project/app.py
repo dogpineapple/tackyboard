@@ -177,7 +177,6 @@ def delete_tackyboard(user, tackyboard_id):
     Deletes a tackyboard by tackyboard_id.
     Returns { "message": "Deleted Tackyboard #[n]" }
     """
-    print("yeeet")
     message = Tackyboard.deleteTackyboard(tackyboard_id)
 
     return (message, 200)
