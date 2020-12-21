@@ -1,7 +1,8 @@
 # tackyboard
-A universal card-based task managing web application.
-Demo: https://tackyboard.diana-liang.com/
-Hosted using Netlify and Heroku
+A universal card-based task managing web application made with JS, Python
+>Demo: https://tackyboard.diana-liang.com/
+- Hosted using Netlify and Heroku
+- UI design by @dogpineapple
 
 # the stack
 Front-end: JavaScript 
